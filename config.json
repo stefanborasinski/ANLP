@@ -1,0 +1,9 @@
+{
+  "unigram": {
+  "method": "unigram"
+},
+"bigram": {
+  "method": "bigram",
+  "smoothing": "kneser-ney"
+}
+}
