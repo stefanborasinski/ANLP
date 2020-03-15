@@ -1,4 +1,4 @@
-import os, math, argparse, time
+import os, math, time
 import numpy as np
 from scc import *
 from utils import *
@@ -123,13 +123,9 @@ class LanguageModel:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--mode', type=str, help='unigram or bigram ngram model, add kn if smoothing')
-    parser.add_argument('-c', '--config', default='config.json', help='language model config json')
-    parser.add_argument('-td', '--training_dir', type=str, default=r"data/Holmes_Training_Data",
-                        help='location of Holmes_Training_Data folder')
+
+    parser = get_default_argument_parser()
     parser.add_argument('-mf', '--max_files', type=int, default=None, help='maximum number of files used in training. ')
-    parser.add_argument('-vb', "--verbose", type=bool, default=False, help="Print out processed files alongside answers to question to debug")
     args = parser.parse_args()
     config = load_json(args.config)
     try:

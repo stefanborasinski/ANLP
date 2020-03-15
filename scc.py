@@ -12,22 +12,6 @@ class question:
     def add_answer(self, fields):
         self.fields += fields[1]
 
-    def set_context(self, direction, window=1, target="_____"):
-        found = -1
-        direction = direction.lower()[0]
-        sent_tokens = tokenize(self.get_field("question"))
-        for i, token in enumerate(sent_tokens):
-            if token == target:
-                found = i
-                break
-        if found > -1:
-            question.colnames["context " + direction] = question.colnames.get("context " + direction,
-                                                                              len(question.colnames))
-            if direction == "l":
-                self.fields += sent_tokens[i - window:i]
-            if direction == "r":
-                self.fields += sent_tokens[i + 1:i + window + 1]
-
     def make_sentence(self, answer,highlight=False):
         q = self.get_field("question")
         if highlight:

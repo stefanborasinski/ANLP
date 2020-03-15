@@ -1,6 +1,6 @@
-import logging, random, os, json
+import logging, random, os, json, argparse
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(message)s', datefmt='%Y-%b-%d %H:%M',
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(message)s', datefmt='%Y-%b-%d %H:%M:%S',
                     filename="results.log", filemode='a')
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def get_training_testing(training_dir=r"data/Holmes_Training_Data", split=0.5):
 
 def log_results(model_name, total_correct, num_qs, correct_list, incorrect_list):
     logging.info(
-        f"{model_name} | accuracy = {(total_correct / num_qs):.3f} | right ids: {correct_list} | wrong ids: {incorrect_list}")
+        f"{model_name} | accuracy = {[(total_correct / num_qs)]} | right ids: {correct_list} | wrong ids: {incorrect_list}")
     return print(f"Done and logged! Accuracy was {(total_correct / num_qs):.3f}")
 
 
@@ -29,3 +29,15 @@ def load_json(filename):
     with open(filename) as js:
         data = json.load(js)
     return data
+
+
+def get_default_argument_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--mode', default=None, type=str,
+                        help='Language model mode if more than one exist, ie unigram/bigram')
+    parser.add_argument('-c', '--config', default='config.json', help='language model config json')
+    parser.add_argument('-td', '--training_dir', type=str, default=r"data/Holmes_Training_Data",
+                        help='location of Holmes_Training_Data folder')
+    parser.add_argument('-vb', "--verbose", type=bool, default=False,
+                        help="Print out processed files alongside answers to question to debug")
+    return parser

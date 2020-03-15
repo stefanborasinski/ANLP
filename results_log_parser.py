@@ -40,7 +40,7 @@ class ResultsLogParser:
         cleanstring = m.group(0)
         cleanstring = cleanstring.replace("'", '')
         cleanlist = cleanstring.strip('][').split(', ')
-        cleanlist = [int(item) for item in cleanlist if item.isnumeric()]
+        cleanlist = [int(item) if item.isnumeric() else float(item) for item in cleanlist]
         return cleanlist
 
     def filter_by_model(self, model, filtlist=None):
@@ -81,9 +81,9 @@ class ResultsLogParser:
 
         self.filtlist = copy.deepcopy(self.history[-1])
 
-    def get_ids_as_list(self, listtype, filtlist=None):
+    def get_as_list(self, keyword, filtlist=None):
         results = []
-        idx = self._find_index(listtype)
+        idx = self._find_index(keyword)
         filtlist, close = self._manage_filtlist(filtlist=filtlist)
         for line in filtlist:
             stringlist = self._split_line(line)[idx]
@@ -92,6 +92,7 @@ class ResultsLogParser:
         if close:
             filtlist.close()
         return sorted(results)
+
 
     def _get_weekday(self, d):
         weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
