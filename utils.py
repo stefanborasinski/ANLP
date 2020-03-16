@@ -19,9 +19,11 @@ def get_training_testing(training_dir=r"data/Holmes_Training_Data", split=0.5):
     return trainingfiles, heldoutfiles
 
 
-def log_results(model_name, total_correct, num_qs, correct_list, incorrect_list):
-    logging.info(
-        f"{model_name} | accuracy = {[(total_correct / num_qs)]} | right ids: {correct_list} | wrong ids: {incorrect_list}")
+def log_results(model_name, total_correct, num_qs, correct_list, incorrect_list, **kwargs):
+    kwstr = [f"| {k} = {v}" for k, v in kwargs.items()]
+    kwstr = " ".join(kwstr)
+    logger.info(
+        f"{model_name} | accuracy = {[(total_correct / num_qs)]} | right ids: {correct_list} | wrong ids: {incorrect_list} {kwstr}")
     return print(f"Done and logged! Accuracy was {(total_correct / num_qs):.3f}")
 
 

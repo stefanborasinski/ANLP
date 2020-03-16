@@ -137,12 +137,14 @@ if __name__ == "__main__":
         print(f"Method parameters not found for {args.mode}. Terminating...")
         quit()
     training, _ = get_training_testing(split=1)
+
     start = time.time()
     print(f"Training {args.mode} on {args.max_files if args.max_files is not None else len(training)} files.")
     ngram = LanguageModel(files=training[:args.max_files], trainingdir=args.training_dir, verbose=args.verbose)
     scc = scc_reader()
     acc = 0
     correct, incorrect = [], []
+
     print("Answering questions...")
     for question in scc.questions:
         scores = []

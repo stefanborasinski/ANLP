@@ -6,9 +6,9 @@ class ResultsLogParser:
 
     def __init__(self, log_path=r"results.log"):
         self.ops = 0
-        self.filtlist = None
-        self.history = []
         self.log_path = log_path
+        self.filtlist = self.get_all()
+        self.history = []
         self.since_when_dict = {"today": datetime.combine(date.today(), time()),
                                 "yesterday": datetime.combine(date.today() - timedelta(1), time()),
                                 "start": datetime(2020, 3, 9, 0, 0),
@@ -19,6 +19,11 @@ class ResultsLogParser:
                                 "friday": self._get_weekday("friday"),
                                 "saturday": self._get_weekday("saturday"),
                                 "sunday": self._get_weekday("sunday")}
+
+    def get_all(self):
+        with open(self.log_path, "r") as filtlist:
+            all_results = [line for line in filtlist]
+        self.filtlist = all_results
 
     def _manage_filtlist(self, filtlist=None):
         close = None
@@ -40,8 +45,16 @@ class ResultsLogParser:
         cleanstring = m.group(0)
         cleanstring = cleanstring.replace("'", '')
         cleanlist = cleanstring.strip('][').split(', ')
-        cleanlist = [int(item) if item.isnumeric() else float(item) for item in cleanlist]
-        return cleanlist
+        results = []
+        for item in cleanlist:
+            if item.isnumeric():
+                item = int(item)
+            elif item.replace('.', '', 1).isdigit():
+                item = float(item)
+            else:
+                item = str(item)
+            results.append(item)
+        return results
 
     def filter_by_model(self, model, filtlist=None):
 
@@ -74,7 +87,7 @@ class ResultsLogParser:
                     return print("Too many steps forward from start")
         elif type(steps) == str:
             if steps in ["cl", "clear", "all"]:
-                self.filtlist = None
+                self.get_all()
                 self.history = []
                 self.ops = 0
                 return
@@ -86,13 +99,18 @@ class ResultsLogParser:
         idx = self._find_index(keyword)
         filtlist, close = self._manage_filtlist(filtlist=filtlist)
         for line in filtlist:
-            stringlist = self._split_line(line)[idx]
+            try:
+                stringlist = self._split_line(line)[idx]
+            except IndexError:
+                continue
             reslist = self._dirtystring_to_list(stringlist)
             results += reslist
         if close:
             filtlist.close()
-        return sorted(results)
-
+        try:
+            return sorted(results)
+        except TypeError:
+            return results
 
     def _get_weekday(self, d):
         weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
@@ -106,8 +124,13 @@ class ResultsLogParser:
         idx = None
         if not isinstance(search_terms, list):
             search_terms = [search_terms]
+        found = False
         with open(self.log_path, "r") as logfile:
-            messages = self._split_line(logfile.readline())
+            while not found:
+                line = next(logfile)
+                messages = self._split_line(line)
+                if len(messages) > 2:
+                    found = True
             for i, message in enumerate(messages):
                 if any(substring in message for substring in search_terms):
                     idx = i
@@ -130,7 +153,7 @@ class ResultsLogParser:
 
         for line in filtlist:
             dt = self._split_line(line)[0]
-            dt = datetime.strptime(dt, '%Y-%b-%d %H:%M')
+            dt = datetime.strptime(dt, '%Y-%b-%d %H:%M:%S')
             if dt >= compare_dt:
                 results.append(line)
 
