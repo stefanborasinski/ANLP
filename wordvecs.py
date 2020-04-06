@@ -13,7 +13,7 @@ class LanguageModel:
             self.embedding = gensim.models.KeyedVectors.load_word2vec_format(embfilepath, binary=True)
             self.dim = self.embedding['word'].size
             self.func = self._word2vec
-        if mode = "fasttext":
+        if mode == "fasttext":
             self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
             self.func = self._fasttext
         self.oovwords = []
