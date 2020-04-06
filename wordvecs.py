@@ -4,11 +4,14 @@ from scc import *
 from utils import *
 import numpy as np
 from nltk.tokenize import word_tokenize as tokenize
+import pdb
 
 class LanguageModel:
     
     def __init__(self, mode, embfilepath,training_dir=None, files=[],verbose=False):
         self.mode = mode
+        self.oovwords = []
+        self.verbose = verbose
         if mode == "word2vec":
             self.embedding = gensim.models.KeyedVectors.load_word2vec_format(embfilepath, binary=True)
             self.dim = self.embedding['word'].size
@@ -16,12 +19,10 @@ class LanguageModel:
         if mode == "fasttext":
             self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
             self.func = self._fasttext
-            if trainindir is not None and len(files)>0:
-                self.trainingdir = trainingdir
+            if training_dir is not None and len(files)>0:
+                self.training_dir = training_dir
                 self.files = files
                 self.train()
-        
-        self.oovwords = []
         
     def __str__(self):
         return self.mode
@@ -75,7 +76,7 @@ if __name__ == '__main__':
         training, _ = get_training_testing(args.training_dir,split=1)
         if args.max_files is not None:
             training = training[:max_files]
-            args.files = training
+        args.files = training
     start = time.time()
     print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
     lm = LanguageModel(args.mode, training_dir=args.training_dir, files=args.files, verbose= args.verbose, **config[args.mode])
