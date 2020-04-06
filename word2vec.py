@@ -31,12 +31,15 @@ def total_similarity(vec, q_vec):
 
 if __name__ == '__main__':
     parser = get_default_argument_parser()
-    parser.add_argument('-e', '--embedding_file', type=str, default='data/GoogleNews-vectors-negative300.bin')
     args = parser.parse_args()
+    config = load_json(args.config)
 
     start = time.time()
-    print(f"Loading pretrained embeddings: {args.embedding_file}")
-    embeddings = gensim.models.KeyedVectors.load_word2vec_format(args.embedding_file, binary=True)
+    print(f'Loading pretrained embeddings: {config[args.mode]["embedding"]}')
+    if args.mode[0] == "w":
+        embeddings = gensim.models.KeyedVectors.load_word2vec_format(config[args.mode]['embedding'], binary=True)
+    else:
+        embeddings = gensim.models.fasttext.FastText.load_fasttext_format(config[args.mode]['embedding'])
     scc = scc_reader()
     acc = 0
     correct, incorrect = [], []

@@ -5,5 +5,11 @@
 "bigram": {
   "method": "bigram",
   "smoothing": "kneser-ney"
-}
+},
+"word2vec": {
+    "embedding": "data/embeddings/GoogleNews-vectors-negative300.bin"
+},
+"fasttext": {
+    "embedding": "data/embeddings/wiki-news-300d-1M-subword.bin"
+}   
 }
