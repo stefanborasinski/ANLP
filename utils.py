@@ -42,4 +42,5 @@ def get_default_argument_parser():
                         help='location of Holmes_Training_Data folder')
     parser.add_argument('-vb', "--verbose", type=bool, default=False,
                         help="Print out processed files alongside answers to question to debug")
+     parser.add_argument('-mf', '--max_files', type=int, default=None, help='maximum number of files used in training. ')
     return parser

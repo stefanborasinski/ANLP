@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize as tokenize
 
 class LanguageModel:
     
-    def __init__(self, mode, embfilepath):
+    def __init__(self, mode, embfilepath,training_dir=None, files=[],verbose=False):
         self.mode = mode
         if mode == "word2vec":
             self.embedding = gensim.models.KeyedVectors.load_word2vec_format(embfilepath, binary=True)
@@ -16,11 +16,27 @@ class LanguageModel:
         if mode == "fasttext":
             self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
             self.func = self._fasttext
+            if trainindir is not None and len(files)>0:
+                self.trainingdir = trainingdir
+                self.files = files
+                self.train()
+        
         self.oovwords = []
         
     def __str__(self):
         return self.mode
-
+    
+    def train(self):
+        for i, afile in enumerate(self.files):
+            if self.verbose:
+                print(f"{i+1}/{len(self.files)} Processing {afile}")
+            try:
+                with open(os.path.join(self.training_dir, afile)) as file:
+                    self.embedding.build_vocab(corpus_file=file, update=True)
+                    self.embedding.train(corpus_file=file, total_words=len(file.split()),epochs=self.embedding.epochs)
+            except UnicodeDecodeError:
+                print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+    
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
             word_vec.append(self.embedding[word])
@@ -55,10 +71,14 @@ if __name__ == '__main__':
     parser = get_default_argument_parser()
     args = parser.parse_args()
     config = load_json(args.config)
-
+    if args.training_dir is not None:
+        training, _ = get_training_testing(args.training_dir,split=1)
+        if args.max_files is not None:
+            training = training[:max_files]
+            args.files = training
     start = time.time()
-    print(f'Loading pretrained embeddings: {config[args.mode]["embedding"]}')
-    lm = LanguageModel(args.mode, config[args.mode]["embedding"])
+    print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
+    lm = LanguageModel(args.mode, training_dir=args.training_dir, files=args.files, verbose= args.verbose, **config[args.mode])
     scc = scc_reader()
     acc = 0
     correct, incorrect = [], []

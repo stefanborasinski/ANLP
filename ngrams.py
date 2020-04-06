@@ -125,7 +125,6 @@ class LanguageModel:
 if __name__ == "__main__":
 
     parser = get_default_argument_parser()
-    parser.add_argument('-mf', '--max_files', type=int, default=None, help='maximum number of files used in training. ')
     args = parser.parse_args()
     config = load_json(args.config)
     try:
