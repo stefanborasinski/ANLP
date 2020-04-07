@@ -21,7 +21,7 @@ class question:
 
 class scc_reader:
 
-    def __init__(self, qs=r"data/testing_data.csv", ans=r"data/test_answer.csv"):
+    def __init__(self, qs=r"cleaned_data/testing_data.csv", ans=r"cleaned_data/test_answer.csv"):
         self.qs = qs
         self.ans = ans
         self.read_files()
