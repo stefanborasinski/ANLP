@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 keys = ["a)", "b)", "c)", "d)", "e)"]
 
 
-def get_training_testing(training_dir=r"data/Holmes_Training_Data", split=0.5):
+def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", split=0.5):
     filenames = os.listdir(training_dir)
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
@@ -38,7 +38,7 @@ def get_default_argument_parser():
     parser.add_argument('-m', '--mode', default=None, type=str,
                         help='Language model mode if more than one exist, ie unigram/bigram')
     parser.add_argument('-c', '--config', default='config.json', help='language model config json')
-    parser.add_argument('-td', '--training_dir', type=str, default=r"data/Holmes_Training_Data",
+    parser.add_argument('-td', '--training_dir', type=str, default=r"cleaned_data/Holmes_Training_Data",
                         help='location of Holmes_Training_Data folder')
     parser.add_argument('-vb', "--verbose", type=bool, default=False,
                         help="Print out processed files alongside answers to question to debug")
