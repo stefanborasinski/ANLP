@@ -1,5 +1,4 @@
-corpuses/htd_clean_lines_corpus.TXT
-corpuses/htd_clean_lines_nopunc_corpus.TXT
+corpuses/
 .ipynb_checkpoints/
 data/
 .idea/
