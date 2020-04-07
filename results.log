@@ -58,3 +58,298 @@
 2020-Apr-06 16:27:36 | downsampling leaves estimated 12676 word corpus (16.7% of prior 76074)
 2020-Apr-06 16:27:49 | estimated required memory for 2000105 words, 682403 buckets and 300 dimensions: 6827695196 bytes
 2020-Apr-06 16:27:49 | updating layer weights
+2020-Apr-07 11:14:33 | loading 2000000 words for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:14:37 | failed to decode invalid unicode bytes b'\xe8\x8b\xb1\xe8\xaa\x9e\xe7\x89\x88\xe3\x82\xa6\xe3\x82\xa3\xe3\x82\xad\xe3\x83\x9a\xe3\x83\x87\xe3\x82\xa3\xe3\x82\xa2\xe3\x81\xb8\xe3\x81\xae\xe6\x8a\x95\xe7\xa8\xbf\xe3\x81\xaf\xe3\x81\x84\xe3\x81\xa4\xe3\x81\xa7\xe3\x82\x82\xe6'; replacing invalid characters, using '英語版ウィキペディアへの投稿はいつでも\\xe6'
+2020-Apr-07 11:14:39 | failed to decode invalid unicode bytes b'\xe4\xbd\x86\xe6\x98\xaf\xe4\xbd\xa0\xe9\x80\x99\xe6\xac\xa1\xe5\x9f\xb7\xe7\xad\x86\xe6\x89\x80\xe4\xbd\xbf\xe7\x94\xa8\xe7\x9a\x84\xe8\x8b\xb1\xe6\x96\x87\xe4\xb8\xa6\xe6\x9c\xaa\xe9\x81\x94\xe5\x88\xb0\xe8\x8b\xb1\xe6\x96\x87\xe7'; replacing invalid characters, using '但是你這次執筆所使用的英文並未達到英文\\xe7'
+2020-Apr-07 11:14:40 | failed to decode invalid unicode bytes b'\xd0\xb0\xd0\xb4\xd0\xbc\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x82\xd0\xb8\xd0\xb2\xd0\xbd\xd0\xbe-\xd1\x82\xd0\xb5\xd1\x80\xd1\x80\xd0\xb8\xd1\x82\xd0\xbe\xd1\x80\xd0\xb8\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1'; replacing invalid characters, using 'административно-территориальн\\xd1'
+2020-Apr-07 11:18:02 | loading 2000000 words for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:18:06 | failed to decode invalid unicode bytes b'\xe8\x8b\xb1\xe8\xaa\x9e\xe7\x89\x88\xe3\x82\xa6\xe3\x82\xa3\xe3\x82\xad\xe3\x83\x9a\xe3\x83\x87\xe3\x82\xa3\xe3\x82\xa2\xe3\x81\xb8\xe3\x81\xae\xe6\x8a\x95\xe7\xa8\xbf\xe3\x81\xaf\xe3\x81\x84\xe3\x81\xa4\xe3\x81\xa7\xe3\x82\x82\xe6'; replacing invalid characters, using '英語版ウィキペディアへの投稿はいつでも\\xe6'
+2020-Apr-07 11:18:09 | failed to decode invalid unicode bytes b'\xe4\xbd\x86\xe6\x98\xaf\xe4\xbd\xa0\xe9\x80\x99\xe6\xac\xa1\xe5\x9f\xb7\xe7\xad\x86\xe6\x89\x80\xe4\xbd\xbf\xe7\x94\xa8\xe7\x9a\x84\xe8\x8b\xb1\xe6\x96\x87\xe4\xb8\xa6\xe6\x9c\xaa\xe9\x81\x94\xe5\x88\xb0\xe8\x8b\xb1\xe6\x96\x87\xe7'; replacing invalid characters, using '但是你這次執筆所使用的英文並未達到英文\\xe7'
+2020-Apr-07 11:18:09 | failed to decode invalid unicode bytes b'\xd0\xb0\xd0\xb4\xd0\xbc\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x82\xd0\xb8\xd0\xb2\xd0\xbd\xd0\xbe-\xd1\x82\xd0\xb5\xd1\x80\xd1\x80\xd0\xb8\xd1\x82\xd0\xbe\xd1\x80\xd0\xb8\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1'; replacing invalid characters, using 'административно-территориальн\\xd1'
+2020-Apr-07 11:19:15 | resetting layer weights
+2020-Apr-07 11:19:28 | Updating model with new vocabulary
+2020-Apr-07 11:19:57 | loading 2000000 words for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:20:01 | failed to decode invalid unicode bytes b'\xe8\x8b\xb1\xe8\xaa\x9e\xe7\x89\x88\xe3\x82\xa6\xe3\x82\xa3\xe3\x82\xad\xe3\x83\x9a\xe3\x83\x87\xe3\x82\xa3\xe3\x82\xa2\xe3\x81\xb8\xe3\x81\xae\xe6\x8a\x95\xe7\xa8\xbf\xe3\x81\xaf\xe3\x81\x84\xe3\x81\xa4\xe3\x81\xa7\xe3\x82\x82\xe6'; replacing invalid characters, using '英語版ウィキペディアへの投稿はいつでも\\xe6'
+2020-Apr-07 11:20:04 | failed to decode invalid unicode bytes b'\xe4\xbd\x86\xe6\x98\xaf\xe4\xbd\xa0\xe9\x80\x99\xe6\xac\xa1\xe5\x9f\xb7\xe7\xad\x86\xe6\x89\x80\xe4\xbd\xbf\xe7\x94\xa8\xe7\x9a\x84\xe8\x8b\xb1\xe6\x96\x87\xe4\xb8\xa6\xe6\x9c\xaa\xe9\x81\x94\xe5\x88\xb0\xe8\x8b\xb1\xe6\x96\x87\xe7'; replacing invalid characters, using '但是你這次執筆所使用的英文並未達到英文\\xe7'
+2020-Apr-07 11:20:05 | failed to decode invalid unicode bytes b'\xd0\xb0\xd0\xb4\xd0\xbc\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x82\xd0\xb8\xd0\xb2\xd0\xbd\xd0\xbe-\xd1\x82\xd0\xb5\xd1\x80\xd1\x80\xd0\xb8\xd1\x82\xd0\xbe\xd1\x80\xd0\xb8\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1'; replacing invalid characters, using 'административно-территориальн\\xd1'
+2020-Apr-07 11:20:28 | resetting layer weights
+2020-Apr-07 11:20:38 | Updating model with new vocabulary
+2020-Apr-07 11:20:44 | New added 2000000 unique words (50% of original 4000000) and increased the count of 2000000 pre-existing words (50% of original 4000000)
+2020-Apr-07 11:20:58 | deleting the raw counts dictionary of 2000000 items
+2020-Apr-07 11:20:58 | sample=1e-05 downsamples 5698 most-common words
+2020-Apr-07 11:20:58 | downsampling leaves estimated 5635237139 word corpus (61.2% of prior 9203539378)
+2020-Apr-07 11:21:58 | loaded (4000000, 300) weight matrix for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:21:58 | collecting all words and their counts
+2020-Apr-07 11:21:58 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:21:58 | collected 6263 word types from a corpus of 48008 raw words and 3418 sentences
+2020-Apr-07 11:21:58 | Updating model with new vocabulary
+2020-Apr-07 11:21:58 | New added 632 unique words (9% of original 6895) and increased the count of 632 pre-existing words (9% of original 6895)
+2020-Apr-07 11:21:58 | deleting the raw counts dictionary of 6263 items
+2020-Apr-07 11:21:58 | sample=1e-05 downsamples 1264 most-common words
+2020-Apr-07 11:21:58 | downsampling leaves estimated 5134 word corpus (14.0% of prior 36606)
+2020-Apr-07 11:22:11 | estimated required memory for 2000120 words, 682430 buckets and 300 dimensions: 6827771864 bytes
+2020-Apr-07 11:22:11 | updating layer weights
+2020-Apr-07 11:25:17 | loading 2000000 words for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:25:21 | failed to decode invalid unicode bytes b'\xe8\x8b\xb1\xe8\xaa\x9e\xe7\x89\x88\xe3\x82\xa6\xe3\x82\xa3\xe3\x82\xad\xe3\x83\x9a\xe3\x83\x87\xe3\x82\xa3\xe3\x82\xa2\xe3\x81\xb8\xe3\x81\xae\xe6\x8a\x95\xe7\xa8\xbf\xe3\x81\xaf\xe3\x81\x84\xe3\x81\xa4\xe3\x81\xa7\xe3\x82\x82\xe6'; replacing invalid characters, using '英語版ウィキペディアへの投稿はいつでも\\xe6'
+2020-Apr-07 11:25:24 | failed to decode invalid unicode bytes b'\xe4\xbd\x86\xe6\x98\xaf\xe4\xbd\xa0\xe9\x80\x99\xe6\xac\xa1\xe5\x9f\xb7\xe7\xad\x86\xe6\x89\x80\xe4\xbd\xbf\xe7\x94\xa8\xe7\x9a\x84\xe8\x8b\xb1\xe6\x96\x87\xe4\xb8\xa6\xe6\x9c\xaa\xe9\x81\x94\xe5\x88\xb0\xe8\x8b\xb1\xe6\x96\x87\xe7'; replacing invalid characters, using '但是你這次執筆所使用的英文並未達到英文\\xe7'
+2020-Apr-07 11:25:24 | failed to decode invalid unicode bytes b'\xd0\xb0\xd0\xb4\xd0\xbc\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x82\xd0\xb8\xd0\xb2\xd0\xbd\xd0\xbe-\xd1\x82\xd0\xb5\xd1\x80\xd1\x80\xd0\xb8\xd1\x82\xd0\xbe\xd1\x80\xd0\xb8\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1'; replacing invalid characters, using 'административно-территориальн\\xd1'
+2020-Apr-07 11:26:34 | resetting layer weights
+2020-Apr-07 11:26:43 | Updating model with new vocabulary
+2020-Apr-07 11:26:50 | New added 2000000 unique words (50% of original 4000000) and increased the count of 2000000 pre-existing words (50% of original 4000000)
+2020-Apr-07 11:27:04 | deleting the raw counts dictionary of 2000000 items
+2020-Apr-07 11:27:04 | sample=1e-05 downsamples 5698 most-common words
+2020-Apr-07 11:27:04 | downsampling leaves estimated 5635237139 word corpus (61.2% of prior 9203539378)
+2020-Apr-07 11:28:03 | loaded (4000000, 300) weight matrix for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:28:03 | collecting all words and their counts
+2020-Apr-07 11:28:03 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:28:03 | collected 6263 word types from a corpus of 48008 raw words and 3418 sentences
+2020-Apr-07 11:28:03 | Updating model with new vocabulary
+2020-Apr-07 11:28:03 | New added 632 unique words (9% of original 6895) and increased the count of 632 pre-existing words (9% of original 6895)
+2020-Apr-07 11:28:03 | deleting the raw counts dictionary of 6263 items
+2020-Apr-07 11:28:03 | sample=1e-05 downsamples 1264 most-common words
+2020-Apr-07 11:28:03 | downsampling leaves estimated 5134 word corpus (14.0% of prior 36606)
+2020-Apr-07 11:28:16 | estimated required memory for 2000120 words, 682430 buckets and 300 dimensions: 6827771864 bytes
+2020-Apr-07 11:28:16 | updating layer weights
+2020-Apr-07 11:28:46 | training model with 3 workers on 2000120 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:28:50 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:28:50 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:28:50 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:28:50 | EPOCH - 1 : training on 55957 raw words (10741 effective words) took 0.1s, 87514 effective words/s
+2020-Apr-07 11:28:56 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:28:56 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:28:56 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:28:56 | EPOCH - 2 : training on 55957 raw words (10726 effective words) took 0.1s, 98422 effective words/s
+2020-Apr-07 11:28:57 | training on a 111914 raw words (21467 effective words) took 10.7s, 2004 effective words/s
+2020-Apr-07 11:28:57 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:29:45 | collecting all words and their counts
+2020-Apr-07 11:29:45 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:29:45 | collected 17334 word types from a corpus of 99008 raw words and 8515 sentences
+2020-Apr-07 11:29:45 | Updating model with new vocabulary
+2020-Apr-07 11:29:45 | New added 1065 unique words (5% of original 18399) and increased the count of 1065 pre-existing words (5% of original 18399)
+2020-Apr-07 11:29:45 | deleting the raw counts dictionary of 17334 items
+2020-Apr-07 11:29:45 | sample=1e-05 downsamples 2130 most-common words
+2020-Apr-07 11:29:45 | downsampling leaves estimated 12271 word corpus (17.6% of prior 69633)
+2020-Apr-07 11:29:58 | estimated required memory for 2000262 words, 682534 buckets and 300 dimensions: 6828320752 bytes
+2020-Apr-07 11:29:58 | updating layer weights
+2020-Apr-07 11:30:28 | training model with 3 workers on 2000262 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:30:32 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:30:32 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:30:33 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:30:33 | EPOCH - 1 : training on 113313 raw words (26155 effective words) took 0.3s, 102940 effective words/s
+2020-Apr-07 11:30:38 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:30:38 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:30:38 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:30:38 | EPOCH - 2 : training on 113313 raw words (26178 effective words) took 0.2s, 106219 effective words/s
+2020-Apr-07 11:30:39 | training on a 226626 raw words (52333 effective words) took 11.1s, 4716 effective words/s
+2020-Apr-07 11:30:39 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:31:27 | collecting all words and their counts
+2020-Apr-07 11:31:27 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:31:27 | collected 6817 word types from a corpus of 37121 raw words and 2180 sentences
+2020-Apr-07 11:31:27 | Updating model with new vocabulary
+2020-Apr-07 11:31:27 | New added 454 unique words (6% of original 7271) and increased the count of 454 pre-existing words (6% of original 7271)
+2020-Apr-07 11:31:27 | deleting the raw counts dictionary of 6817 items
+2020-Apr-07 11:31:27 | sample=1e-05 downsamples 908 most-common words
+2020-Apr-07 11:31:27 | downsampling leaves estimated 2916 word corpus (11.7% of prior 24921)
+2020-Apr-07 11:31:40 | estimated required memory for 2000300 words, 682560 buckets and 300 dimensions: 6828465552 bytes
+2020-Apr-07 11:31:40 | updating layer weights
+2020-Apr-07 11:32:10 | training model with 3 workers on 2000300 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:32:14 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:32:14 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:32:14 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:32:14 | EPOCH - 1 : training on 52441 raw words (10985 effective words) took 0.1s, 91371 effective words/s
+2020-Apr-07 11:32:20 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:32:20 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:32:20 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:32:20 | EPOCH - 2 : training on 52441 raw words (10949 effective words) took 0.1s, 92997 effective words/s
+2020-Apr-07 11:32:21 | training on a 104882 raw words (21934 effective words) took 11.0s, 1987 effective words/s
+2020-Apr-07 11:32:21 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:33:09 | collecting all words and their counts
+2020-Apr-07 11:33:09 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:33:09 | collected 3807 word types from a corpus of 21382 raw words and 1457 sentences
+2020-Apr-07 11:33:09 | Updating model with new vocabulary
+2020-Apr-07 11:33:09 | New added 304 unique words (7% of original 4111) and increased the count of 304 pre-existing words (7% of original 4111)
+2020-Apr-07 11:33:09 | deleting the raw counts dictionary of 3807 items
+2020-Apr-07 11:33:09 | sample=1e-05 downsamples 608 most-common words
+2020-Apr-07 11:33:09 | downsampling leaves estimated 1461 word corpus (9.8% of prior 14885)
+2020-Apr-07 11:33:23 | estimated required memory for 2000302 words, 682560 buckets and 300 dimensions: 6828471576 bytes
+2020-Apr-07 11:33:23 | updating layer weights
+2020-Apr-07 11:33:53 | training model with 3 workers on 2000302 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:33:57 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:33:57 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:33:57 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:33:57 | EPOCH - 1 : training on 27109 raw words (4800 effective words) took 0.1s, 94741 effective words/s
+2020-Apr-07 11:34:02 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:34:02 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:34:02 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:34:02 | EPOCH - 2 : training on 27109 raw words (4910 effective words) took 0.1s, 96238 effective words/s
+2020-Apr-07 11:34:04 | training on a 54218 raw words (9710 effective words) took 10.8s, 896 effective words/s
+2020-Apr-07 11:34:04 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:34:52 | collecting all words and their counts
+2020-Apr-07 11:34:52 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:34:52 | PROGRESS: at sentence #10000, processed 243983 words, keeping 30506 word types
+2020-Apr-07 11:34:52 | collected 31681 word types from a corpus of 257736 raw words and 10484 sentences
+2020-Apr-07 11:34:52 | Updating model with new vocabulary
+2020-Apr-07 11:34:52 | New added 2701 unique words (7% of original 34382) and increased the count of 2701 pre-existing words (7% of original 34382)
+2020-Apr-07 11:34:52 | deleting the raw counts dictionary of 31681 items
+2020-Apr-07 11:34:52 | sample=1e-05 downsamples 5402 most-common words
+2020-Apr-07 11:34:52 | downsampling leaves estimated 56142 word corpus (28.0% of prior 200455)
+2020-Apr-07 11:35:06 | estimated required memory for 2000772 words, 682830 buckets and 300 dimensions: 6830201560 bytes
+2020-Apr-07 11:35:06 | updating layer weights
+2020-Apr-07 11:35:36 | training model with 3 workers on 2000772 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:35:40 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:35:40 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:35:40 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:35:40 | EPOCH - 1 : training on 266608 raw words (60086 effective words) took 0.7s, 88770 effective words/s
+2020-Apr-07 11:35:46 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:35:46 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:35:46 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:35:46 | EPOCH - 2 : training on 266608 raw words (60349 effective words) took 0.6s, 95557 effective words/s
+2020-Apr-07 11:35:48 | training on a 533216 raw words (120435 effective words) took 12.0s, 10042 effective words/s
+2020-Apr-07 11:35:48 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:36:36 | collecting all words and their counts
+2020-Apr-07 11:36:36 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:36:36 | collected 12150 word types from a corpus of 61743 raw words and 4871 sentences
+2020-Apr-07 11:36:36 | Updating model with new vocabulary
+2020-Apr-07 11:36:36 | New added 694 unique words (5% of original 12844) and increased the count of 694 pre-existing words (5% of original 12844)
+2020-Apr-07 11:36:36 | deleting the raw counts dictionary of 12150 items
+2020-Apr-07 11:36:36 | sample=1e-05 downsamples 1388 most-common words
+2020-Apr-07 11:36:36 | downsampling leaves estimated 6050 word corpus (14.4% of prior 42018)
+2020-Apr-07 11:36:49 | estimated required memory for 2000818 words, 682871 buckets and 300 dimensions: 6830388328 bytes
+2020-Apr-07 11:36:49 | updating layer weights
+2020-Apr-07 11:37:19 | training model with 3 workers on 2000818 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:37:24 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:37:24 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:37:24 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:37:24 | EPOCH - 1 : training on 80794 raw words (14614 effective words) took 0.1s, 98773 effective words/s
+2020-Apr-07 11:37:29 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:37:29 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:37:29 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:37:29 | EPOCH - 2 : training on 80794 raw words (14578 effective words) took 0.2s, 96296 effective words/s
+2020-Apr-07 11:37:30 | training on a 161588 raw words (29192 effective words) took 11.0s, 2648 effective words/s
+2020-Apr-07 11:37:30 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:38:18 | collecting all words and their counts
+2020-Apr-07 11:38:18 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:38:18 | collected 17033 word types from a corpus of 97311 raw words and 4029 sentences
+2020-Apr-07 11:38:18 | Updating model with new vocabulary
+2020-Apr-07 11:38:18 | New added 1007 unique words (5% of original 18040) and increased the count of 1007 pre-existing words (5% of original 18040)
+2020-Apr-07 11:38:18 | deleting the raw counts dictionary of 17033 items
+2020-Apr-07 11:38:18 | sample=1e-05 downsamples 2014 most-common words
+2020-Apr-07 11:38:18 | downsampling leaves estimated 10945 word corpus (16.2% of prior 67498)
+2020-Apr-07 11:38:32 | estimated required memory for 2000854 words, 682889 buckets and 300 dimensions: 6830517648 bytes
+2020-Apr-07 11:38:32 | updating layer weights
+2020-Apr-07 11:39:02 | training model with 3 workers on 2000854 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:39:06 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:39:07 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:39:07 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:39:07 | EPOCH - 1 : training on 112741 raw words (25597 effective words) took 0.3s, 94748 effective words/s
+2020-Apr-07 11:39:12 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:39:12 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:39:12 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:39:12 | EPOCH - 2 : training on 112741 raw words (25849 effective words) took 0.3s, 94668 effective words/s
+2020-Apr-07 11:39:13 | training on a 225482 raw words (51446 effective words) took 11.2s, 4586 effective words/s
+2020-Apr-07 11:39:13 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:40:01 | collecting all words and their counts
+2020-Apr-07 11:40:01 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:40:02 | collected 22077 word types from a corpus of 148580 raw words and 8114 sentences
+2020-Apr-07 11:40:02 | Updating model with new vocabulary
+2020-Apr-07 11:40:02 | New added 1468 unique words (6% of original 23545) and increased the count of 1468 pre-existing words (6% of original 23545)
+2020-Apr-07 11:40:02 | deleting the raw counts dictionary of 22077 items
+2020-Apr-07 11:40:02 | sample=1e-05 downsamples 2936 most-common words
+2020-Apr-07 11:40:02 | downsampling leaves estimated 22473 word corpus (20.2% of prior 111439)
+2020-Apr-07 11:40:15 | estimated required memory for 2000930 words, 682934 buckets and 300 dimensions: 6830799112 bytes
+2020-Apr-07 11:40:15 | updating layer weights
+2020-Apr-07 11:40:46 | training model with 3 workers on 2000930 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:40:50 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:40:50 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:40:50 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:40:50 | EPOCH - 1 : training on 150128 raw words (31295 effective words) took 0.3s, 99396 effective words/s
+2020-Apr-07 11:40:56 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:40:56 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:40:56 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:40:56 | EPOCH - 2 : training on 150128 raw words (31369 effective words) took 0.3s, 99902 effective words/s
+2020-Apr-07 11:40:57 | training on a 300256 raw words (62664 effective words) took 11.4s, 5520 effective words/s
+2020-Apr-07 11:40:57 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:41:46 | collecting all words and their counts
+2020-Apr-07 11:41:46 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:41:46 | collected 5889 word types from a corpus of 33198 raw words and 1559 sentences
+2020-Apr-07 11:41:46 | Updating model with new vocabulary
+2020-Apr-07 11:41:46 | New added 391 unique words (6% of original 6280) and increased the count of 391 pre-existing words (6% of original 6280)
+2020-Apr-07 11:41:46 | deleting the raw counts dictionary of 5889 items
+2020-Apr-07 11:41:46 | sample=1e-05 downsamples 782 most-common words
+2020-Apr-07 11:41:46 | downsampling leaves estimated 2413 word corpus (10.5% of prior 22983)
+2020-Apr-07 11:42:00 | estimated required memory for 2000940 words, 682941 buckets and 300 dimensions: 6830837344 bytes
+2020-Apr-07 11:42:00 | updating layer weights
+2020-Apr-07 11:42:31 | training model with 3 workers on 2000940 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:42:35 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:42:35 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:42:35 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:42:35 | EPOCH - 1 : training on 51470 raw words (9788 effective words) took 0.1s, 92629 effective words/s
+2020-Apr-07 11:42:41 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:42:41 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:42:41 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:42:41 | EPOCH - 2 : training on 51470 raw words (9643 effective words) took 0.1s, 102351 effective words/s
+2020-Apr-07 11:42:42 | training on a 102940 raw words (19431 effective words) took 10.9s, 1777 effective words/s
+2020-Apr-07 11:42:42 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:43:31 | collecting all words and their counts
+2020-Apr-07 11:43:31 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:43:31 | collected 4136 word types from a corpus of 17812 raw words and 1303 sentences
+2020-Apr-07 11:43:31 | Updating model with new vocabulary
+2020-Apr-07 11:43:31 | New added 226 unique words (5% of original 4362) and increased the count of 226 pre-existing words (5% of original 4362)
+2020-Apr-07 11:43:31 | deleting the raw counts dictionary of 4136 items
+2020-Apr-07 11:43:31 | sample=1e-05 downsamples 452 most-common words
+2020-Apr-07 11:43:31 | downsampling leaves estimated 931 word corpus (8.3% of prior 11160)
+2020-Apr-07 11:43:44 | estimated required memory for 2000942 words, 682943 buckets and 300 dimensions: 6830845744 bytes
+2020-Apr-07 11:43:44 | updating layer weights
+2020-Apr-07 11:44:16 | training model with 3 workers on 2000942 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:44:20 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:44:20 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:44:20 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:44:20 | EPOCH - 1 : training on 26081 raw words (5028 effective words) took 0.1s, 96051 effective words/s
+2020-Apr-07 11:44:26 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:44:26 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:44:26 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:44:26 | EPOCH - 2 : training on 26081 raw words (5105 effective words) took 0.1s, 87059 effective words/s
+2020-Apr-07 11:44:27 | training on a 52162 raw words (10133 effective words) took 10.9s, 930 effective words/s
+2020-Apr-07 11:44:27 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:45:16 | collecting all words and their counts
+2020-Apr-07 11:45:16 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:45:16 | collected 3489 word types from a corpus of 14891 raw words and 664 sentences
+2020-Apr-07 11:45:16 | Updating model with new vocabulary
+2020-Apr-07 11:45:16 | New added 175 unique words (4% of original 3664) and increased the count of 175 pre-existing words (4% of original 3664)
+2020-Apr-07 11:45:16 | deleting the raw counts dictionary of 3489 items
+2020-Apr-07 11:45:16 | sample=1e-05 downsamples 350 most-common words
+2020-Apr-07 11:45:16 | downsampling leaves estimated 684 word corpus (7.3% of prior 9356)
+2020-Apr-07 11:45:30 | estimated required memory for 2000942 words, 682943 buckets and 300 dimensions: 6830845744 bytes
+2020-Apr-07 11:45:30 | updating layer weights
+2020-Apr-07 11:46:01 | training model with 3 workers on 2000942 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:46:05 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:46:05 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:46:05 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:46:05 | EPOCH - 1 : training on 24957 raw words (4516 effective words) took 0.0s, 95626 effective words/s
+2020-Apr-07 11:46:11 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:46:11 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:46:11 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:46:11 | EPOCH - 2 : training on 24957 raw words (4527 effective words) took 0.0s, 93724 effective words/s
+2020-Apr-07 11:46:12 | training on a 49914 raw words (9043 effective words) took 10.9s, 832 effective words/s
+2020-Apr-07 11:46:12 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:47:01 | collecting all words and their counts
+2020-Apr-07 11:47:01 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:47:01 | collected 10704 word types from a corpus of 61528 raw words and 4044 sentences
+2020-Apr-07 11:47:01 | Updating model with new vocabulary
+2020-Apr-07 11:47:01 | New added 722 unique words (6% of original 11426) and increased the count of 722 pre-existing words (6% of original 11426)
+2020-Apr-07 11:47:01 | deleting the raw counts dictionary of 10704 items
+2020-Apr-07 11:47:01 | sample=1e-05 downsamples 1444 most-common words
+2020-Apr-07 11:47:01 | downsampling leaves estimated 6456 word corpus (14.6% of prior 44097)
+2020-Apr-07 11:47:15 | estimated required memory for 2000989 words, 682981 buckets and 300 dimensions: 6831031780 bytes
+2020-Apr-07 11:47:15 | updating layer weights
+2020-Apr-07 11:47:46 | training model with 3 workers on 2000989 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:47:50 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:47:50 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:47:50 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:47:50 | EPOCH - 1 : training on 80530 raw words (14396 effective words) took 0.2s, 95907 effective words/s
+2020-Apr-07 11:47:56 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:47:56 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:47:56 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:47:56 | EPOCH - 2 : training on 80530 raw words (14313 effective words) took 0.1s, 97581 effective words/s
+2020-Apr-07 11:47:57 | training on a 161060 raw words (28709 effective words) took 11.0s, 2607 effective words/s
+2020-Apr-07 11:47:57 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay

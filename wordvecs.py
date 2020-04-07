@@ -32,9 +32,10 @@ class LanguageModel:
             if self.verbose:
                 print(f"{i+1}/{len(self.files)} Processing {afile}")
             try:
-                with open(os.path.join(self.training_dir, afile)) as file:
-                    self.embedding.build_vocab(corpus_file=file, update=True)
-                    self.embedding.train(corpus_file=file, total_words=len(file.split()),epochs=self.embedding.epochs)
+                filepath = os.path.join(self.training_dir, afile)
+                with open(filepath) as file:
+                    self.embedding.build_vocab(corpus_file=filepath, update=True)
+                    self.embedding.train(corpus_file=filepath, total_words=len(file.read().split()),epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
     
