@@ -353,3 +353,226 @@
 2020-Apr-07 11:47:56 | EPOCH - 2 : training on 80530 raw words (14313 effective words) took 0.1s, 97581 effective words/s
 2020-Apr-07 11:47:57 | training on a 161060 raw words (28709 effective words) took 11.0s, 2607 effective words/s
 2020-Apr-07 11:47:57 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:51:25 | loading 2000000 words for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:51:29 | failed to decode invalid unicode bytes b'\xe8\x8b\xb1\xe8\xaa\x9e\xe7\x89\x88\xe3\x82\xa6\xe3\x82\xa3\xe3\x82\xad\xe3\x83\x9a\xe3\x83\x87\xe3\x82\xa3\xe3\x82\xa2\xe3\x81\xb8\xe3\x81\xae\xe6\x8a\x95\xe7\xa8\xbf\xe3\x81\xaf\xe3\x81\x84\xe3\x81\xa4\xe3\x81\xa7\xe3\x82\x82\xe6'; replacing invalid characters, using '英語版ウィキペディアへの投稿はいつでも\\xe6'
+2020-Apr-07 11:51:31 | failed to decode invalid unicode bytes b'\xe4\xbd\x86\xe6\x98\xaf\xe4\xbd\xa0\xe9\x80\x99\xe6\xac\xa1\xe5\x9f\xb7\xe7\xad\x86\xe6\x89\x80\xe4\xbd\xbf\xe7\x94\xa8\xe7\x9a\x84\xe8\x8b\xb1\xe6\x96\x87\xe4\xb8\xa6\xe6\x9c\xaa\xe9\x81\x94\xe5\x88\xb0\xe8\x8b\xb1\xe6\x96\x87\xe7'; replacing invalid characters, using '但是你這次執筆所使用的英文並未達到英文\\xe7'
+2020-Apr-07 11:51:32 | failed to decode invalid unicode bytes b'\xd0\xb0\xd0\xb4\xd0\xbc\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x82\xd0\xb8\xd0\xb2\xd0\xbd\xd0\xbe-\xd1\x82\xd0\xb5\xd1\x80\xd1\x80\xd0\xb8\xd1\x82\xd0\xbe\xd1\x80\xd0\xb8\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1'; replacing invalid characters, using 'административно-территориальн\\xd1'
+2020-Apr-07 11:52:33 | resetting layer weights
+2020-Apr-07 11:52:42 | Updating model with new vocabulary
+2020-Apr-07 11:52:49 | New added 2000000 unique words (50% of original 4000000) and increased the count of 2000000 pre-existing words (50% of original 4000000)
+2020-Apr-07 11:53:03 | deleting the raw counts dictionary of 2000000 items
+2020-Apr-07 11:53:03 | sample=1e-05 downsamples 5698 most-common words
+2020-Apr-07 11:53:03 | downsampling leaves estimated 5635237139 word corpus (61.2% of prior 9203539378)
+2020-Apr-07 11:54:01 | loaded (4000000, 300) weight matrix for fastText model from data/embeddings/wiki-news-300d-1M-subword.bin
+2020-Apr-07 11:54:01 | collecting all words and their counts
+2020-Apr-07 11:54:01 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:54:01 | collected 6263 word types from a corpus of 48008 raw words and 3418 sentences
+2020-Apr-07 11:54:01 | Updating model with new vocabulary
+2020-Apr-07 11:54:01 | New added 632 unique words (9% of original 6895) and increased the count of 632 pre-existing words (9% of original 6895)
+2020-Apr-07 11:54:01 | deleting the raw counts dictionary of 6263 items
+2020-Apr-07 11:54:01 | sample=1e-05 downsamples 1264 most-common words
+2020-Apr-07 11:54:01 | downsampling leaves estimated 5134 word corpus (14.0% of prior 36606)
+2020-Apr-07 11:54:15 | estimated required memory for 2000120 words, 682430 buckets and 300 dimensions: 6827771864 bytes
+2020-Apr-07 11:54:15 | updating layer weights
+2020-Apr-07 11:54:44 | training model with 3 workers on 2000120 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:54:48 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:54:48 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:54:48 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:54:48 | EPOCH - 1 : training on 55957 raw words (10741 effective words) took 0.1s, 94328 effective words/s
+2020-Apr-07 11:54:53 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:54:53 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:54:53 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:54:53 | EPOCH - 2 : training on 55957 raw words (10740 effective words) took 0.1s, 95679 effective words/s
+2020-Apr-07 11:54:55 | training on a 111914 raw words (21481 effective words) took 10.9s, 1965 effective words/s
+2020-Apr-07 11:54:55 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:55:41 | collecting all words and their counts
+2020-Apr-07 11:55:41 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:55:41 | collected 17334 word types from a corpus of 99008 raw words and 8515 sentences
+2020-Apr-07 11:55:41 | Updating model with new vocabulary
+2020-Apr-07 11:55:41 | New added 1065 unique words (5% of original 18399) and increased the count of 1065 pre-existing words (5% of original 18399)
+2020-Apr-07 11:55:41 | deleting the raw counts dictionary of 17334 items
+2020-Apr-07 11:55:41 | sample=1e-05 downsamples 2130 most-common words
+2020-Apr-07 11:55:41 | downsampling leaves estimated 12271 word corpus (17.6% of prior 69633)
+2020-Apr-07 11:55:55 | estimated required memory for 2000262 words, 682534 buckets and 300 dimensions: 6828320752 bytes
+2020-Apr-07 11:55:55 | updating layer weights
+2020-Apr-07 11:56:24 | training model with 3 workers on 2000262 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:56:29 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:56:29 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:56:29 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:56:29 | EPOCH - 1 : training on 113313 raw words (26155 effective words) took 0.3s, 95484 effective words/s
+2020-Apr-07 11:56:34 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:56:34 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:56:34 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:56:34 | EPOCH - 2 : training on 113313 raw words (26130 effective words) took 0.3s, 102609 effective words/s
+2020-Apr-07 11:56:36 | training on a 226626 raw words (52285 effective words) took 11.4s, 4590 effective words/s
+2020-Apr-07 11:56:36 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:57:23 | collecting all words and their counts
+2020-Apr-07 11:57:23 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:57:23 | collected 6817 word types from a corpus of 37121 raw words and 2180 sentences
+2020-Apr-07 11:57:23 | Updating model with new vocabulary
+2020-Apr-07 11:57:23 | New added 454 unique words (6% of original 7271) and increased the count of 454 pre-existing words (6% of original 7271)
+2020-Apr-07 11:57:23 | deleting the raw counts dictionary of 6817 items
+2020-Apr-07 11:57:23 | sample=1e-05 downsamples 908 most-common words
+2020-Apr-07 11:57:23 | downsampling leaves estimated 2916 word corpus (11.7% of prior 24921)
+2020-Apr-07 11:57:36 | estimated required memory for 2000300 words, 682560 buckets and 300 dimensions: 6828465552 bytes
+2020-Apr-07 11:57:36 | updating layer weights
+2020-Apr-07 11:58:06 | training model with 3 workers on 2000300 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:58:10 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:58:10 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:58:10 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:58:10 | EPOCH - 1 : training on 52441 raw words (10985 effective words) took 0.1s, 92334 effective words/s
+2020-Apr-07 11:58:16 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:58:16 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:58:16 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:58:16 | EPOCH - 2 : training on 52441 raw words (11012 effective words) took 0.1s, 91357 effective words/s
+2020-Apr-07 11:58:17 | training on a 104882 raw words (21997 effective words) took 11.0s, 1998 effective words/s
+2020-Apr-07 11:58:17 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 11:59:04 | collecting all words and their counts
+2020-Apr-07 11:59:04 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 11:59:04 | collected 3807 word types from a corpus of 21382 raw words and 1457 sentences
+2020-Apr-07 11:59:04 | Updating model with new vocabulary
+2020-Apr-07 11:59:04 | New added 304 unique words (7% of original 4111) and increased the count of 304 pre-existing words (7% of original 4111)
+2020-Apr-07 11:59:04 | deleting the raw counts dictionary of 3807 items
+2020-Apr-07 11:59:04 | sample=1e-05 downsamples 608 most-common words
+2020-Apr-07 11:59:04 | downsampling leaves estimated 1461 word corpus (9.8% of prior 14885)
+2020-Apr-07 11:59:18 | estimated required memory for 2000302 words, 682560 buckets and 300 dimensions: 6828471576 bytes
+2020-Apr-07 11:59:18 | updating layer weights
+2020-Apr-07 11:59:47 | training model with 3 workers on 2000302 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 11:59:51 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:59:51 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:59:51 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:59:51 | EPOCH - 1 : training on 27109 raw words (4856 effective words) took 0.1s, 95151 effective words/s
+2020-Apr-07 11:59:57 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 11:59:57 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 11:59:57 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 11:59:57 | EPOCH - 2 : training on 27109 raw words (4910 effective words) took 0.1s, 85107 effective words/s
+2020-Apr-07 11:59:58 | training on a 54218 raw words (9766 effective words) took 10.9s, 896 effective words/s
+2020-Apr-07 11:59:58 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:00:45 | collecting all words and their counts
+2020-Apr-07 12:00:45 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:00:45 | PROGRESS: at sentence #10000, processed 243983 words, keeping 30506 word types
+2020-Apr-07 12:00:45 | collected 31681 word types from a corpus of 257736 raw words and 10484 sentences
+2020-Apr-07 12:00:45 | Updating model with new vocabulary
+2020-Apr-07 12:00:45 | New added 2701 unique words (7% of original 34382) and increased the count of 2701 pre-existing words (7% of original 34382)
+2020-Apr-07 12:00:45 | deleting the raw counts dictionary of 31681 items
+2020-Apr-07 12:00:45 | sample=1e-05 downsamples 5402 most-common words
+2020-Apr-07 12:00:45 | downsampling leaves estimated 56142 word corpus (28.0% of prior 200455)
+2020-Apr-07 12:00:59 | estimated required memory for 2000772 words, 682830 buckets and 300 dimensions: 6830201560 bytes
+2020-Apr-07 12:00:59 | updating layer weights
+2020-Apr-07 12:01:29 | training model with 3 workers on 2000772 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:01:34 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:01:34 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:01:34 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:01:34 | EPOCH - 1 : training on 266608 raw words (59909 effective words) took 0.6s, 93146 effective words/s
+2020-Apr-07 12:01:40 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:01:40 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:01:40 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:01:40 | EPOCH - 2 : training on 266608 raw words (60349 effective words) took 0.6s, 96524 effective words/s
+2020-Apr-07 12:01:41 | training on a 533216 raw words (120258 effective words) took 12.1s, 9975 effective words/s
+2020-Apr-07 12:01:41 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:02:28 | collecting all words and their counts
+2020-Apr-07 12:02:28 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:02:28 | collected 12150 word types from a corpus of 61743 raw words and 4871 sentences
+2020-Apr-07 12:02:28 | Updating model with new vocabulary
+2020-Apr-07 12:02:28 | New added 694 unique words (5% of original 12844) and increased the count of 694 pre-existing words (5% of original 12844)
+2020-Apr-07 12:02:28 | deleting the raw counts dictionary of 12150 items
+2020-Apr-07 12:02:28 | sample=1e-05 downsamples 1388 most-common words
+2020-Apr-07 12:02:28 | downsampling leaves estimated 6050 word corpus (14.4% of prior 42018)
+2020-Apr-07 12:02:42 | estimated required memory for 2000818 words, 682871 buckets and 300 dimensions: 6830388328 bytes
+2020-Apr-07 12:02:42 | updating layer weights
+2020-Apr-07 12:03:11 | training model with 3 workers on 2000818 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:03:15 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:03:15 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:03:15 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:03:15 | EPOCH - 1 : training on 80794 raw words (14562 effective words) took 0.2s, 93925 effective words/s
+2020-Apr-07 12:03:21 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:03:21 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:03:21 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:03:21 | EPOCH - 2 : training on 80794 raw words (14450 effective words) took 0.2s, 94683 effective words/s
+2020-Apr-07 12:03:22 | training on a 161588 raw words (29012 effective words) took 11.2s, 2585 effective words/s
+2020-Apr-07 12:03:22 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:04:09 | collecting all words and their counts
+2020-Apr-07 12:04:09 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:04:09 | collected 17033 word types from a corpus of 97311 raw words and 4029 sentences
+2020-Apr-07 12:04:09 | Updating model with new vocabulary
+2020-Apr-07 12:04:09 | New added 1007 unique words (5% of original 18040) and increased the count of 1007 pre-existing words (5% of original 18040)
+2020-Apr-07 12:04:09 | deleting the raw counts dictionary of 17033 items
+2020-Apr-07 12:04:09 | sample=1e-05 downsamples 2014 most-common words
+2020-Apr-07 12:04:09 | downsampling leaves estimated 10945 word corpus (16.2% of prior 67498)
+2020-Apr-07 12:04:23 | estimated required memory for 2000854 words, 682889 buckets and 300 dimensions: 6830517648 bytes
+2020-Apr-07 12:04:23 | updating layer weights
+2020-Apr-07 12:04:53 | training model with 3 workers on 2000854 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:04:58 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:04:58 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:04:58 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:04:58 | EPOCH - 1 : training on 112741 raw words (25597 effective words) took 0.3s, 92263 effective words/s
+2020-Apr-07 12:05:04 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:05:04 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:05:04 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:05:04 | EPOCH - 2 : training on 112741 raw words (25849 effective words) took 0.3s, 90874 effective words/s
+2020-Apr-07 12:05:05 | training on a 225482 raw words (51446 effective words) took 11.5s, 4484 effective words/s
+2020-Apr-07 12:05:05 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:05:52 | collecting all words and their counts
+2020-Apr-07 12:05:52 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:05:52 | collected 22077 word types from a corpus of 148580 raw words and 8114 sentences
+2020-Apr-07 12:05:52 | Updating model with new vocabulary
+2020-Apr-07 12:05:52 | New added 1468 unique words (6% of original 23545) and increased the count of 1468 pre-existing words (6% of original 23545)
+2020-Apr-07 12:05:52 | deleting the raw counts dictionary of 22077 items
+2020-Apr-07 12:05:52 | sample=1e-05 downsamples 2936 most-common words
+2020-Apr-07 12:05:52 | downsampling leaves estimated 22473 word corpus (20.2% of prior 111439)
+2020-Apr-07 12:06:06 | estimated required memory for 2000930 words, 682934 buckets and 300 dimensions: 6830799112 bytes
+2020-Apr-07 12:06:06 | updating layer weights
+2020-Apr-07 12:06:36 | training model with 3 workers on 2000930 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:06:41 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:06:41 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:06:41 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:06:41 | EPOCH - 1 : training on 150128 raw words (31295 effective words) took 0.3s, 97712 effective words/s
+2020-Apr-07 12:06:46 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:06:47 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:06:47 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:06:47 | EPOCH - 2 : training on 150128 raw words (31423 effective words) took 0.3s, 98993 effective words/s
+2020-Apr-07 12:06:48 | training on a 300256 raw words (62718 effective words) took 11.5s, 5431 effective words/s
+2020-Apr-07 12:06:48 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:07:35 | collecting all words and their counts
+2020-Apr-07 12:07:35 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:07:35 | collected 5889 word types from a corpus of 33198 raw words and 1559 sentences
+2020-Apr-07 12:07:35 | Updating model with new vocabulary
+2020-Apr-07 12:07:35 | New added 391 unique words (6% of original 6280) and increased the count of 391 pre-existing words (6% of original 6280)
+2020-Apr-07 12:07:35 | deleting the raw counts dictionary of 5889 items
+2020-Apr-07 12:07:35 | sample=1e-05 downsamples 782 most-common words
+2020-Apr-07 12:07:35 | downsampling leaves estimated 2413 word corpus (10.5% of prior 22983)
+2020-Apr-07 12:07:49 | estimated required memory for 2000940 words, 682941 buckets and 300 dimensions: 6830837344 bytes
+2020-Apr-07 12:07:49 | updating layer weights
+2020-Apr-07 12:08:18 | training model with 3 workers on 2000940 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:08:23 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:08:23 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:08:23 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:08:23 | EPOCH - 1 : training on 51470 raw words (9788 effective words) took 0.1s, 104773 effective words/s
+2020-Apr-07 12:08:28 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:08:28 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:08:28 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:08:28 | EPOCH - 2 : training on 51470 raw words (9643 effective words) took 0.1s, 87818 effective words/s
+2020-Apr-07 12:08:30 | training on a 102940 raw words (19431 effective words) took 11.1s, 1746 effective words/s
+2020-Apr-07 12:08:30 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:09:17 | collecting all words and their counts
+2020-Apr-07 12:09:17 | PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-Apr-07 12:09:17 | collected 4136 word types from a corpus of 17812 raw words and 1303 sentences
+2020-Apr-07 12:09:17 | Updating model with new vocabulary
+2020-Apr-07 12:09:17 | New added 226 unique words (5% of original 4362) and increased the count of 226 pre-existing words (5% of original 4362)
+2020-Apr-07 12:09:17 | deleting the raw counts dictionary of 4136 items
+2020-Apr-07 12:09:17 | sample=1e-05 downsamples 452 most-common words
+2020-Apr-07 12:09:17 | downsampling leaves estimated 931 word corpus (8.3% of prior 11160)
+2020-Apr-07 12:09:31 | estimated required memory for 2000942 words, 682943 buckets and 300 dimensions: 6830845744 bytes
+2020-Apr-07 12:09:31 | updating layer weights
+2020-Apr-07 12:10:00 | training model with 3 workers on 2000942 vocabulary and 300 features, using sg=0 hs=0 sample=1e-05 negative=20 window=10
+2020-Apr-07 12:10:05 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:10:05 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:10:05 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:10:05 | EPOCH - 1 : training on 26081 raw words (5028 effective words) took 0.1s, 97039 effective words/s
+2020-Apr-07 12:10:10 | worker thread finished; awaiting finish of 2 more threads
+2020-Apr-07 12:10:10 | worker thread finished; awaiting finish of 1 more threads
+2020-Apr-07 12:10:10 | worker thread finished; awaiting finish of 0 more threads
+2020-Apr-07 12:10:10 | EPOCH - 2 : training on 26081 raw words (5043 effective words) took 0.1s, 95238 effective words/s
+2020-Apr-07 12:10:12 | training on a 52162 raw words (10071 effective words) took 11.1s, 909 effective words/s
+2020-Apr-07 12:10:12 | under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2020-Apr-07 12:11:05 | fasttext | accuracy = [0.23365384615384616] | right ids: ['5', '6', '7', '9', '12', '13', '17', '22', '27', '31', '33', '41', '44', '45', '48', '57', '65', '67', '72', '77', '87', '93', '104', '111', '113', '124', '125', '130', '131', '132', '135', '136', '137', '140', '144', '149', '159', '164', '170', '171', '176', '183', '186', '190', '191', '198', '204', '213', '216', '220', '221', '223', '239', '240', '247', '253', '254', '257', '259', '262', '265', '266', '269', '271', '274', '276', '277', '285', '291', '292', '299', '304', '306', '317', '325', '330', '333', '335', '343', '347', '348', '355', '356', '357', '364', '370', '372', '375', '377', '383', '384', '393', '394', '395', '398', '399', '400', '402', '408', '414', '415', '417', '418', '419', '425', '427', '434', '435', '436', '439', '440', '443', '445', '446', '449', '457', '461', '468', '472', '480', '482', '485', '495', '500', '506', '515', '516', '517', '521', '522', '526', '529', '531', '532', '534', '537', '538', '545', '550', '554', '557', '558', '560', '562', '566', '572', '578', '589', '591', '606', '607', '608', '612', '620', '623', '625', '628', '630', '633', '634', '641', '643', '652', '655', '658', '661', '666', '667', '676', '683', '684', '688', '705', '710', '713', '714', '719', '723', '732', '735', '742', '744', '746', '752', '754', '766', '774', '777', '778', '781', '787', '788', '790', '791', '799', '811', '825', '837', '840', '845', '846', '849', '852', '857', '859', '866', '874', '877', '878', '879', '884', '899', '904', '907', '911', '913', '923', '925', '932', '936', '939', '944', '947', '955', '960', '961', '967', '970', '973', '975', '977', '980', '995', '996', '1000', '1002', '1004', '1006', '1016', '1021', '1027', '1033', '1036'] | wrong ids: ['1', '2', '3', '4', '8', '10', '11', '14', '15', '16', '18', '19', '20', '21', '23', '24', '25', '26', '28', '29', '30', '32', '34', '35', '36', '37', '38', '39', '40', '42', '43', '46', '47', '49', '50', '51', '52', '53', '54', '55', '56', '58', '59', '60', '61', '62', '63', '64', '66', '68', '69', '70', '71', '73', '74', '75', '76', '78', '79', '80', '81', '82', '83', '84', '85', '86', '88', '89', '90', '91', '92', '94', '95', '96', '97', '98', '99', '100', '101', '102', '103', '105', '106', '107', '108', '109', '110', '112', '114', '115', '116', '117', '118', '119', '120', '121', '122', '123', '126', '127', '128', '129', '133', '134', '138', '139', '141', '142', '143', '145', '146', '147', '148', '150', '151', '152', '153', '154', '155', '156', '157', '158', '160', '161', '162', '163', '165', '166', '167', '168', '169', '172', '173', '174', '175', '177', '178', '179', '180', '181', '182', '184', '185', '187', '188', '189', '192', '193', '194', '195', '196', '197', '199', '200', '201', '202', '203', '205', '206', '207', '208', '209', '210', '211', '212', '214', '215', '217', '218', '219', '222', '224', '225', '226', '227', '228', '229', '230', '231', '232', '233', '234', '235', '236', '237', '238', '241', '242', '243', '244', '245', '246', '248', '249', '250', '251', '252', '255', '256', '258', '260', '261', '263', '264', '267', '268', '270', '272', '273', '275', '278', '279', '280', '281', '282', '283', '284', '286', '287', '288', '289', '290', '293', '294', '295', '296', '297', '298', '300', '301', '302', '303', '305', '307', '308', '309', '310', '311', '312', '313', '314', '315', '316', '318', '319', '320', '321', '322', '323', '324', '326', '327', '328', '329', '331', '332', '334', '336', '337', '338', '339', '340', '341', '342', '344', '345', '346', '349', '350', '351', '352', '353', '354', '358', '359', '360', '361', '362', '363', '365', '366', '367', '368', '369', '371', '373', '374', '376', '378', '379', '380', '381', '382', '385', '386', '387', '388', '389', '390', '391', '392', '396', '397', '401', '403', '404', '405', '406', '407', '409', '410', '411', '412', '413', '416', '420', '421', '422', '423', '424', '426', '428', '429', '430', '431', '432', '433', '437', '438', '441', '442', '444', '447', '448', '450', '451', '452', '453', '454', '455', '456', '458', '459', '460', '462', '463', '464', '465', '466', '467', '469', '470', '471', '473', '474', '475', '476', '477', '478', '479', '481', '483', '484', '486', '487', '488', '489', '490', '491', '492', '493', '494', '496', '497', '498', '499', '501', '502', '503', '504', '505', '507', '508', '509', '510', '511', '512', '513', '514', '518', '519', '520', '523', '524', '525', '527', '528', '530', '533', '535', '536', '539', '540', '541', '542', '543', '544', '546', '547', '548', '549', '551', '552', '553', '555', '556', '559', '561', '563', '564', '565', '567', '568', '569', '570', '571', '573', '574', '575', '576', '577', '579', '580', '581', '582', '583', '584', '585', '586', '587', '588', '590', '592', '593', '594', '595', '596', '597', '598', '599', '600', '601', '602', '603', '604', '605', '609', '610', '611', '613', '614', '615', '616', '617', '618', '619', '621', '622', '624', '626', '627', '629', '631', '632', '635', '636', '637', '638', '639', '640', '642', '644', '645', '646', '647', '648', '649', '650', '651', '653', '654', '656', '657', '659', '660', '662', '663', '664', '665', '668', '669', '670', '671', '672', '673', '674', '675', '677', '678', '679', '680', '681', '682', '685', '686', '687', '689', '690', '691', '692', '693', '694', '695', '696', '697', '698', '699', '700', '701', '702', '703', '704', '706', '707', '708', '709', '711', '712', '715', '716', '717', '718', '720', '721', '722', '724', '725', '726', '727', '728', '729', '730', '731', '733', '734', '736', '737', '738', '739', '740', '741', '743', '745', '747', '748', '749', '750', '751', '753', '755', '756', '757', '758', '759', '760', '761', '762', '763', '764', '765', '767', '768', '769', '770', '771', '772', '773', '775', '776', '779', '780', '782', '783', '784', '785', '786', '789', '792', '793', '794', '795', '796', '797', '798', '800', '801', '802', '803', '804', '805', '806', '807', '808', '809', '810', '812', '813', '814', '815', '816', '817', '818', '819', '820', '821', '822', '823', '824', '826', '827', '828', '829', '830', '831', '832', '833', '834', '835', '836', '838', '839', '841', '842', '843', '844', '847', '848', '850', '851', '853', '854', '855', '856', '858', '860', '861', '862', '863', '864', '865', '867', '868', '869', '870', '871', '872', '873', '875', '876', '880', '881', '882', '883', '885', '886', '887', '888', '889', '890', '891', '892', '893', '894', '895', '896', '897', '898', '900', '901', '902', '903', '905', '906', '908', '909', '910', '912', '914', '915', '916', '917', '918', '919', '920', '921', '922', '924', '926', '927', '928', '929', '930', '931', '933', '934', '935', '937', '938', '940', '941', '942', '943', '945', '946', '948', '949', '950', '951', '952', '953', '954', '956', '957', '958', '959', '962', '963', '964', '965', '966', '968', '969', '971', '972', '974', '976', '978', '979', '981', '982', '983', '984', '985', '986', '987', '988', '989', '990', '991', '992', '993', '994', '997', '998', '999', '1001', '1003', '1005', '1007', '1008', '1009', '1010', '1011', '1012', '1013', '1014', '1015', '1017', '1018', '1019', '1020', '1022', '1023', '1024', '1025', '1026', '1028', '1029', '1030', '1031', '1032', '1034', '1035', '1037', '1038', '1039', '1040'] | failwords = ['smoothfaced', 'bellpull', 'fouryearold', 'blottingpaper', 'policestation', "comin'", 'dressinggown', 'ecarte', 'wellgrown', 'Jamess', 'sittingroom', 'consultingroom', 'morningroom', "family's", 'quarterpast', 'smokingroom', 'countryhouses', 'Holmess', "wit's", 'halfpay', 'coalblack', 'billiardroom', 'hansoms', 'doorkey', 'fellowcountryman', 'bellrope', 'waitingroom', "sister's", 'brassbound', "bride's", "horse's", 'diamondshaped', "milliner's", 'fourwheeled', 'sittingrooms', 'snow-flake', 'broadshouldered', 'dark-lantern', 'luncheon-table', 'coatsleeve', 'illused', 'darklantern']

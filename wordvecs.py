@@ -25,7 +25,7 @@ class LanguageModel:
                 self.train()
         
     def __str__(self):
-        return self.mode
+        return f"{self.mode} trained on {len(self.files)} files"
     
     def train(self):
         for i, afile in enumerate(self.files):
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         if args.verbose:
             print(
                 f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(keys[idx]), highlight=True)}")
-    log_results(lm.mode, acc, len(scc.questions), correct,
+    log_results(lm.__str__(), acc, len(scc.questions), correct,
                 incorrect, failwords=lm.oovwords)
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
