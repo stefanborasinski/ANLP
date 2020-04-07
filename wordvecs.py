@@ -76,7 +76,7 @@ if __name__ == '__main__':
     if args.training_dir is not None:
         training, _ = get_training_testing(args.training_dir,split=1)
         if args.max_files is not None:
-            training = training[:max_files]
+            training = training[:args.max_files]
         args.files = training
     start = time.time()
     print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
