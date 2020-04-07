@@ -7,9 +7,9 @@
   "smoothing": "kneser-ney"
 },
 "word2vec": {
-    "embfilepath": "data/embeddings/GoogleNews-vectors-negative300.bin"
+    "embfilepath": "embeddings/GoogleNews-vectors-negative300.bin"
 },
 "fasttext": {
-    "embfilepath": "data/embeddings/wiki-news-300d-1M-subword.bin"
+    "embfilepath": "embeddings/wiki-news-300d-1M-subword.bin"
 }   
 }
