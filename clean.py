@@ -13,6 +13,7 @@ import gutenberg.cleanup.strip_headers as strip_headers
 from gutenberg._util.os import reopen_encoded
 from gutenberg import Error
 import pdb
+import string
 from nltk.tokenize import sent_tokenize
 
 
@@ -26,6 +27,7 @@ except IndexError:
     linesentence = False
 
 files = glob.glob(indir + '/*.TXT')
+translator = str.maketrans('', '', string.punctuation)
 for f in tqdm(files):
     try:
         with reopen_encoded(open(f, 'r'), 'r', 'utf8') as infile:
@@ -36,8 +38,8 @@ for f in tqdm(files):
         with open(outdir + '/' + short, 'w', encoding='utf8') as outfile:
             if linesentence:
                 for sentence in cleaned:
-                    outfile.write(f'{sentence}\n')
+                    outfile.write(f'{sentence.translate(translator)}\n')
             else:
-                outfile.write(cleaned)
+                outfile.write(cleaned.translate(translator)) #may have to change this too if keeping punc
     except:
         print('Error processing', f, '; skipping...')

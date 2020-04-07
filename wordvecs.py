@@ -25,7 +25,7 @@ class LanguageModel:
                 self.train()
         
     def __str__(self):
-        return f"{self.mode} trained on {len(self.files)} files"
+        return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
     
     def train(self):
         for i, afile in enumerate(self.files):
