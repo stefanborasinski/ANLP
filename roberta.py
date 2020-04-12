@@ -1,5 +1,5 @@
 import numpy as np
-import string
+import string, time
 from scc import *
 from utils import *
 import torch
@@ -12,6 +12,7 @@ if __name__ == '__main__':
     roberta = torch.hub.load('pytorch/fairseq', 'roberta.large')
     scc = scc_reader()
 
+    guessed = []
     acc = 0
     correct, incorrect = [], []
     topk = 50000
@@ -30,7 +31,7 @@ if __name__ == '__main__':
             if candidate in rob_ranks:
                 ans_ranks.append(rob_ranks.index(candidate))
             else:
-                ans_ranks.append(topk+1)
+                ans_ranks.append(topk)
         mins = min(ans_ranks)
         idx = np.random.choice([i for i, j in enumerate(ans_ranks) if j == mins])
         answer = scc.keys[idx][0]
@@ -41,9 +42,10 @@ if __name__ == '__main__':
             correct.append(qid)
         else:
             incorrect.append(qid)
+        if len(set(ans_ranks))==1:
+            guessed.append(qid)
         if args.verbose:
             print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")
-    log_results(roberta.__str__(), acc, len(scc.questions), correct,
-                incorrect)
+    log_results(roberta.__str__(), acc, len(scc.questions), correct, incorrect, guessed=guessed)
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
