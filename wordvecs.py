@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
         #  calculate total word similarity by summing distances between answer token vector and question token vectors
         scores = []
-        candidates = [question.get_field(ak) for ak in keys]  # get answers as strings
+        candidates = [question.get_field(ak) for ak in scc.keys]  # get answers as strings
         cand_vecs = lm.get_wordvec(candidates)
         for ans_vec in cand_vecs:
             s = lm.total_similarity(ans_vec, q_vec)
@@ -105,7 +105,7 @@ if __name__ == '__main__':
         maxs = max(scores)
         idx = np.random.choice(
             [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
-        answer = keys[idx][0]  # answer is first letter of key w/o accompanying bracket
+        answer = scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
         qid = question.get_field("id")
         outcome = answer == question.get_field("answer")
         if outcome:
@@ -115,7 +115,7 @@ if __name__ == '__main__':
             incorrect.append(qid)
         if args.verbose:
             print(
-                f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(keys[idx]), highlight=True)}")
+                f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")
     log_results(lm.__str__(), acc, len(scc.questions), correct,
                 incorrect, failwords=lm.oovwords)
     endtime = time.time() - start

@@ -147,7 +147,7 @@ if __name__ == "__main__":
     print("Answering questions...")
     for question in scc.questions:
         scores = []
-        for key in keys:
+        for key in scc.keys:
             answord = question.get_field(key)
             q = question.make_sentence(answord)
             s, _ = ngram.compute_prob_line(q, methodparams=mp)
@@ -155,7 +155,7 @@ if __name__ == "__main__":
         maxs = max(scores)
         idx = np.random.choice(
             [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
-        answer = keys[idx][0]  # answer is first letter of key w/o accompanying bracket
+        answer = scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
         qid = question.get_field("id")
         outcome = answer == question.get_field("answer")
         if outcome:
@@ -164,7 +164,7 @@ if __name__ == "__main__":
         else:
             incorrect.append(qid)
         if args.verbose:
-            print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(keys[idx]),highlight=True)}")
+            print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]),highlight=True)}")
     log_results(args.mode + " " + ngram.__str__(), acc, len(scc.questions), correct,
                 incorrect)
     endtime = time.time() - start

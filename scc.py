@@ -25,6 +25,7 @@ class scc_reader:
         self.qs = qs
         self.ans = ans
         self.read_files()
+        self.keys = ["a)", "b)", "c)", "d)", "e)"]
 
     def read_files(self):
         # read in the question file

@@ -4,8 +4,6 @@ logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s | %(message)s', 
                     filename="results.log", filemode='a')
 logger = logging.getLogger(__name__)
 
-keys = ["a)", "b)", "c)", "d)", "e)"]
-
 
 def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", split=0.5):
     filenames = os.listdir(training_dir)
