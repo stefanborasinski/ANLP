@@ -15,7 +15,7 @@ if __name__ == '__main__':
     guessed = []
     acc = 0
     correct, incorrect = [], []
-    topk = 50000
+    topk = 49500
     start = time.time()
 
     for question in scc.questions:
@@ -46,6 +46,6 @@ if __name__ == '__main__':
             guessed.append(qid)
         if args.verbose:
             print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")
-    log_results(roberta.__str__(), acc, len(scc.questions), correct, incorrect, guessed=guessed)
+    log_results("roberta", acc, len(scc.questions), correct, incorrect, guessed=guessed)
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
