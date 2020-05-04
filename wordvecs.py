@@ -38,7 +38,7 @@ class LanguageModel:
     def __str__(self):
         return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
     
-    def train(self,checkpoint_after=1):
+    def train(self,checkpoint_after=int(len(self.files)/2)):
         for i, afile in enumerate(self.files):
             
             if self.verbose:
