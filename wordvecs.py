@@ -1,4 +1,5 @@
 import time, string, gensim
+from gensim.test.utils import get_tmpfile
 from scipy import spatial
 from scc import *
 from utils import *
@@ -45,14 +46,14 @@ class LanguageModel:
             filepath = os.path.join(self.training_dir, afile)
             try:
                 num_lines = sum(1 for line in open(filepath))
-                txtfile = TxtIter() 
-                self.embedding.build_vocab(corpus_file=filepath, update=True)
-                self.embedding.train(sentences=filepath, total_examples=num_lines,epochs=self.embedding.epochs)
+                txtfile = TxtIter(filepath) 
+                self.embedding.build_vocab(sentences=txtfile, update=True)
+                self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
             if i % checkpoint_after == 0:
-                fname = gensim.test.utils.get_tmpfile(f"fasttext_{i}.model")
-                print(f"Saving to disk under {fname} after training on {i} files")
+                fname = get_tmpfile(f"fasttext_{i}.model")
+                print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
     
     def _word2vec(self, word, word_vec):
