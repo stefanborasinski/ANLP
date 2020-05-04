@@ -33,12 +33,12 @@ class LanguageModel:
             if training_dir is not None and len(files)>0:
                 self.training_dir = training_dir
                 self.files = files
-                self.train()
+                self.train(checkpoint_after=int(len(files)/2))
         
     def __str__(self):
         return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
     
-    def train(self,checkpoint_after=int(len(self.files)/2)):
+    def train(self,checkpoint_after):
         for i, afile in enumerate(self.files):
             
             if self.verbose:
