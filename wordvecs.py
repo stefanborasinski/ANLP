@@ -1,4 +1,4 @@
-import time, string, gensim
+import time, string, os, gensim
 from gensim.test.utils import get_tmpfile
 from scipy import spatial
 from scc import *
@@ -51,10 +51,14 @@ class LanguageModel:
                 self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            if i % checkpoint_after == 0:
-                fname = get_tmpfile(f"fasttext_{i}.model")
+            if i+1 % checkpoint_after == 0 or i+1 == len(self.files):
+                fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
+                os.system("cd /tmp && find . -name '*fasttext*' -exec gzip {} \;")
+                os.system(f"mkdir '/content/gdrive/My Drive/fasttext_checkpoints/fasttext_{i+1}' ")
+                os.system(f"cd /tmp && cp -r *fasttext* '/content/gdrive/My Drive/fasttext_checkpoints/fasttext_{i+1}' ")
+                os.system("cd /tmp && rm -rf *fasttext*")
     
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
