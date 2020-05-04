@@ -4,8 +4,7 @@ logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s | %(message)s', 
                     filename="results.log", filemode='a')
 logger = logging.getLogger(__name__)
 
-
-def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", split=0.5):
+def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", split=1.0):
     filenames = os.listdir(training_dir)
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
@@ -40,5 +39,5 @@ def get_default_argument_parser():
                         help='location of Holmes_Training_Data folder')
     parser.add_argument('-vb', "--verbose", type=bool, default=False,
                         help="Print out processed files alongside answers to question to debug")
-    parser.add_argument('-mf', '--max_files', type=int, default=None, help='maximum number of files used in training.')
+    parser.add_argument('-mf', '--max_files', type=int, default=None, help='maximum number of files used in training. choose 0 in order to skip training')
     return parser

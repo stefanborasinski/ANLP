@@ -6,6 +6,16 @@ import numpy as np
 from nltk.tokenize import word_tokenize as tokenize
 import pdb
 
+class TxtIter(object):
+    
+    def __init__(self,filepath):
+        self.filepath = filepath
+    
+    def __iter__(self):
+        with gensim.utils.open(self.filepath,'r',encoding='utf-8') as fin:
+            for line in fin:
+                yield list(tokenize(line))
+
 class LanguageModel:
     
     def __init__(self, mode, embfilepath,training_dir=None, files=[],verbose=False):
@@ -27,17 +37,23 @@ class LanguageModel:
     def __str__(self):
         return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
     
-    def train(self):
+    def train(self,checkpoint_after=1):
         for i, afile in enumerate(self.files):
+            
             if self.verbose:
                 print(f"{i+1}/{len(self.files)} Processing {afile}")
+            filepath = os.path.join(self.training_dir, afile)
             try:
-                filepath = os.path.join(self.training_dir, afile)
-                with open(filepath) as file:
-                    self.embedding.build_vocab(corpus_file=filepath, update=True)
-                    self.embedding.train(corpus_file=filepath, total_words=len(file.read().split()),epochs=self.embedding.epochs)
+                num_lines = sum(1 for line in open(filepath))
+                txtfile = TxtIter() 
+                self.embedding.build_vocab(corpus_file=filepath, update=True)
+                self.embedding.train(sentences=filepath, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+            if i % checkpoint_after == 0:
+                fname = gensim.test.utils.get_tmpfile(f"fasttext_{i}.model")
+                print(f"Saving to disk under {fname} after training on {i} files")
+                self.embedding.save(fname)
     
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
