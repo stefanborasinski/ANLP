@@ -56,14 +56,17 @@ class LanguageModel:
                 fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
-                cwd = os.get_cwd()
+                cwd = os.getcwd()
+                print("tarring...")
                 os.chdir('/tmp') 
                 os.system(f"tar -zcvf fasttext_{i+1}.tar.gz *fasttext_{i+1}.model* --remove-files")
+                print("splitting...")
                 os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
+                print("uploading and saving link to gdrive...")
                 for f in os.listdir():
                     if f'fasttext_{i+1}' in f:
-                        os.system(f"echo {str(datetime.datetime.now())+' | '+f} >>'/content/gdrive/My Drive/linklist.txt'")
-                        os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt'")
+                        os.system(f"echo '{str(datetime.datetime.now())+' : '+f}' >>'/content/gdrive/My Drive/linklist.txt'")
+                        os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt' && rm -rf {f}")
                 os.chdir(cwd)
     
     def _word2vec(self, word, word_vec):

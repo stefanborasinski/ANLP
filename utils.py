@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s | %(message)s', 
 logger = logging.getLogger(__name__)
 
 def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", split=1.0):
-    filenames = os.listdir(training_dir)
+    filenames = sorted(os.listdir(training_dir))
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
     #random.seed(53)  # if you want the same random split every time
