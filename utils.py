@@ -8,8 +8,8 @@ def get_training_testing(training_dir=r"cleaned_data/Holmes_Training_Data", spli
     filenames = os.listdir(training_dir)
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
-    random.seed(53)  # if you want the same random split every time
-    random.shuffle(filenames)
+    #random.seed(53)  # if you want the same random split every time
+    #random.shuffle(filenames)
     index = int(n * split)
     trainingfiles = filenames[:index]
     heldoutfiles = filenames[index:]

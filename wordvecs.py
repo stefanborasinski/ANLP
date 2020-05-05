@@ -33,7 +33,7 @@ class LanguageModel:
             if training_dir is not None and len(files)>0:
                 self.training_dir = training_dir
                 self.files = files
-                self.train(checkpoint_after=int(len(files)/2))
+                self.train(checkpoint_after=np.ceil(len(files)/2))
         
     def __str__(self):
         return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
@@ -55,10 +55,14 @@ class LanguageModel:
                 fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
-                os.system("cd /tmp && find . -name '*fasttext*' -exec gzip {} \;")
-                os.system(f"mkdir '/content/gdrive/My Drive/fasttext_checkpoints/fasttext_{i+1}' ")
-                os.system(f"cd /tmp && cp -r *fasttext* '/content/gdrive/My Drive/fasttext_checkpoints/fasttext_{i+1}' ")
-                os.system("cd /tmp && rm -rf *fasttext*")
+                cwd = os.get_cwd()
+                os.chdir('/tmp') 
+                os.system(f"tar -zcvf fasttext_{i+1}.tar.gz *fasttext_{i+1}.model* --remove-files")
+                os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
+                for f in os.listdir():
+                    if f'fasttext_{i+1}' in f:
+                        os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt'")
+                os.chdir(cwd)
     
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
