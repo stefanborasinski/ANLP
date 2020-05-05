@@ -1,4 +1,5 @@
-import time, string, os, gensim
+import time, string, os, datetime
+import gensim
 from gensim.test.utils import get_tmpfile
 from scipy import spatial
 from scc import *
@@ -61,6 +62,7 @@ class LanguageModel:
                 os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
                 for f in os.listdir():
                     if f'fasttext_{i+1}' in f:
+                        os.system(f"echo {str(datetime.datetime.now())+' | '+f} >>'/content/gdrive/My Drive/linklist.txt'")
                         os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt'")
                 os.chdir(cwd)
     
