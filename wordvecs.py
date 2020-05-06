@@ -20,10 +20,13 @@ class TxtIter(object):
 
 class LanguageModel:
     
-    def __init__(self, mode, embfilepath,training_dir=None, files=[],verbose=False):
+    def __init__(self, mode, embfilepath, training_dir=None, files=[],verbose=False,checkpoint_after=None,test_after=False, scc_reader=None):
         self.mode = mode
         self.oovwords = []
         self.verbose = verbose
+        self.checkpoint_after = checkpoint_after
+        self.test_after = test_after
+        self.scc = scc_reader
         if mode == "word2vec":
             self.embedding = gensim.models.KeyedVectors.load_word2vec_format(embfilepath, binary=True)
             self.dim = self.embedding['word'].size
@@ -34,12 +37,12 @@ class LanguageModel:
             if training_dir is not None and len(files)>0:
                 self.training_dir = training_dir
                 self.files = files
-                self.train(checkpoint_after=np.ceil(len(files)/2))
+                self.train()
         
     def __str__(self):
         return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
     
-    def train(self,checkpoint_after):
+    def train(self):
         for i, afile in enumerate(self.files):
             
             if self.verbose:
@@ -52,7 +55,7 @@ class LanguageModel:
                 self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            if i+1 % checkpoint_after == 0 or i+1 == len(self.files):
+            if self.checkpoint_after and (i+1 % self.checkpoint_after == 0 or i+1 == len(self.files)):
                 fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
@@ -63,11 +66,52 @@ class LanguageModel:
                 print("splitting...")
                 os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
                 print("uploading and saving link to gdrive...")
-                for f in os.listdir():
+                for f in sorted(os.listdir()):
                     if f'fasttext_{i+1}' in f:
-                        os.system(f"echo '{str(datetime.datetime.now())+' : '+f}' >>'/content/gdrive/My Drive/linklist.txt'")
+                        os.system(f"echo '{str(datetime.datetime.now())+': '+f}' >> '/content/gdrive/My Drive/linklist.txt' ")
                         os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt' && rm -rf {f}")
                 os.chdir(cwd)
+                if self.test_after:
+                    self.test()
+                    os.system(f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i+1} to results.log' && git push origin master")
+                    
+            
+    def test(self):
+        acc = 0
+        correct, incorrect = [], []
+        for question in self.scc.questions:
+            q = question.get_field("question")
+            translator = str.maketrans('', '', string.punctuation)
+            q = q.translate(translator)  # strip q of punc, including ____ missing word space
+            tokens = tokenize(q)
+
+            #  get word2vec embedding of tokens in question (excluding answer token)
+            q_vec = self.get_wordvec(tokens)
+
+            #  calculate total word similarity by summing distances between answer token vector and question token vectors
+            scores = []
+            candidates = [question.get_field(ak) for ak in self.scc.keys]  # get answers as strings
+            cand_vecs = self.get_wordvec(candidates)
+            for ans_vec in cand_vecs:
+                s = self.total_similarity(ans_vec, q_vec)
+                scores.append(s)
+            maxs = max(scores)
+            idx = np.random.choice(
+                [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
+            answer = self.scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
+            qid = question.get_field("id")
+            outcome = answer == question.get_field("answer")
+            if outcome:
+                acc += 1
+                correct.append(qid)
+            else:
+                incorrect.append(qid)
+            if self.verbose:
+                print(
+                    f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
+        log_results(self.__str__(), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
+
+        
     
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
@@ -101,52 +145,20 @@ class LanguageModel:
 
 if __name__ == '__main__':
     parser = get_default_argument_parser()
+    parser.add_argument('-ca', '--checkpoint_after', default=None, type=int,
+                        help='number of files processed after which to create a checkpoint')
+    parser.add_argument('-ta', '--test_after', default=None, type=bool,
+                        help='whether or not to test after checkpointing')
     args = parser.parse_args()
     config = load_json(args.config)
-    if args.training_dir is not None:
-        training, _ = get_training_testing(args.training_dir,split=1)
-        if args.max_files is not None:
-            training = training[:args.max_files]
-        args.files = training
-    start = time.time()
-    print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
-    lm = LanguageModel(args.mode, training_dir=args.training_dir, files=args.files, verbose= args.verbose, **config[args.mode])
+    training, _ = get_training_testing(config[args.mode]['training_dir'],split=1)
+    if args.max_files is not None:
+        training = training[:args.max_files]
+    args.files = training
     scc = scc_reader()
-    acc = 0
-    correct, incorrect = [], []
-
-    print("Answering questions...")
-    for question in scc.questions:
-        q = question.get_field("question")
-        translator = str.maketrans('', '', string.punctuation)
-        q = q.translate(translator)  # strip q of punc, including ____ missing word space
-        tokens = tokenize(q)
-
-        #  get word2vec embedding of tokens in question (excluding answer token)
-        q_vec = lm.get_wordvec(tokens)
-
-        #  calculate total word similarity by summing distances between answer token vector and question token vectors
-        scores = []
-        candidates = [question.get_field(ak) for ak in scc.keys]  # get answers as strings
-        cand_vecs = lm.get_wordvec(candidates)
-        for ans_vec in cand_vecs:
-            s = lm.total_similarity(ans_vec, q_vec)
-            scores.append(s)
-        maxs = max(scores)
-        idx = np.random.choice(
-            [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
-        answer = scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
-        qid = question.get_field("id")
-        outcome = answer == question.get_field("answer")
-        if outcome:
-            acc += 1
-            correct.append(qid)
-        else:
-            incorrect.append(qid)
-        if args.verbose:
-            print(
-                f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")
-    log_results(lm.__str__(), acc, len(scc.questions), correct,
-                incorrect, failwords=lm.oovwords)
-    endtime = time.time() - start
-    print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+    print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
+    lm = LanguageModel(args.mode, files=args.files,verbose= args.verbose,checkpoint_after=args.checkpoint_after,test_after=args.test_after,scc_reader=scc, **config[args.mode])
+    if not args.test_after:
+        print("Answering questions...")
+        lm.test()
+        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")

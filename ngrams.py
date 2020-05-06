@@ -7,8 +7,8 @@ from nltk.tokenize import word_tokenize as tokenize
 
 class LanguageModel:
 
-    def __init__(self, trainingdir, files=[], verbose=False):
-        self.training_dir = trainingdir
+    def __init__(self, training_dir, files=[], verbose=False):
+        self.training_dir = training_dir
         self.files = files
         self.verbose = verbose
         self.train()
@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
     start = time.time()
     print(f"Training {args.mode} on {args.max_files if args.max_files is not None else len(training)} files.")
-    ngram = LanguageModel(files=training[:args.max_files], trainingdir=args.training_dir, verbose=args.verbose)
+    ngram = LanguageModel(files=training[:args.max_files], verbose=args.verbose, **config[args.mode])
     scc = scc_reader()
     acc = 0
     correct, incorrect = [], []
