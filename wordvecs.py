@@ -66,10 +66,11 @@ class LanguageModel:
                 print("splitting...")
                 os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
                 print("uploading and saving link to gdrive...")
+                pdb.set_trace()
                 for f in sorted(os.listdir()):
                     if f'fasttext_{i+1}' in f:
-                        os.system(f"echo '{str(datetime.datetime.now())+': '+f}' >> '/content/gdrive/My Drive/linklist.txt' ")
-                        os.system(f"file.io {f} >> '/content/gdrive/My Drive/linklist.txt' && rm -rf {f}")
+                        os.system(f"echo '{str(datetime.datetime.now())+': '+f}' >> '/content/ANLP/linklist.txt' ")
+                        os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
                 os.chdir(cwd)
                 if self.test_after:
                     self.test()

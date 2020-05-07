@@ -1,0 +1,4 @@
+2020-05-07 20:51:45.535452: fasttext_1.partaa
+https://file.io/TbTtp797
+2020-05-07 20:53:57.875775: fasttext_1.partab
+https://file.io/IGYj38YJ

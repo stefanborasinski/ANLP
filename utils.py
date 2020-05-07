@@ -32,7 +32,7 @@ def load_json(filename):
 
 def get_default_argument_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--mode', default=None, type=str,
+    parser.add_argument('-m', '--mode', type=str,
                         help='Language model mode if more than one exist, ie unigram/bigram')
     parser.add_argument('-c', '--config', default='config.json', help='language model config json')
     parser.add_argument('-td', '--training_dir', type=str, default=r"cleaned_data/Holmes_Training_Data",
