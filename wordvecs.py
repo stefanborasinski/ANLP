@@ -39,8 +39,8 @@ class LanguageModel:
                 self.files = files
                 self.train()
         
-    def __str__(self):
-        return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
+    def __str__(self,numfilesbeforecheckpoint=0):
+        return f"{self.mode} trained on {len(self.files) if self.files is not None else numfilesbeforecheckpoint} files"
     
     def train(self):
         for i, afile in enumerate(self.files):
