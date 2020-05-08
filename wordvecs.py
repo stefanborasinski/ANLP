@@ -39,8 +39,11 @@ class LanguageModel:
                 self.files = files
                 self.train()
         
-    def __str__(self,numfilesbeforecheckpoint=0):
-        return f"{self.mode} trained on {len(self.files) if self.files is not None else numfilesbeforecheckpoint} files"
+    def __str__(self,processedfiles=None):
+        if not processedfiles:
+            return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
+        else:
+            return f"{self.mode} trained on {processedfiles} files"
     
     def train(self):
         for i, afile in enumerate(self.files):
@@ -55,7 +58,8 @@ class LanguageModel:
                 self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            if self.checkpoint_after and (i+1 % self.checkpoint_after == 0 or i+1 == len(self.files)):
+            pdb.set_trace()
+            if self.checkpoint_after and ((i+1) % self.checkpoint_after == 0 or i+1 == len(self.files)):
                 fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
                 self.embedding.save(fname)
@@ -66,18 +70,17 @@ class LanguageModel:
                 print("splitting...")
                 os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
                 print("uploading and saving link to gdrive...")
-                pdb.set_trace()
                 for f in sorted(os.listdir()):
                     if f'fasttext_{i+1}' in f:
                         os.system(f"echo '{str(datetime.datetime.now())+': '+f}' >> '/content/ANLP/linklist.txt' ")
                         os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
                 os.chdir(cwd)
                 if self.test_after:
-                    self.test()
+                    self.test(i+1)
                     os.system(f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i+1} to results.log' && git push origin master")
                     
             
-    def test(self):
+    def test(self,processedfiles=None):
         acc = 0
         correct, incorrect = [], []
         for question in self.scc.questions:
@@ -110,7 +113,7 @@ class LanguageModel:
             if self.verbose:
                 print(
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
-        log_results(self.__str__(), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
+        log_results(self.__str__(processedfiles), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
 
         
     
