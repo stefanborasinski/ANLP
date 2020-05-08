@@ -58,7 +58,6 @@ class LanguageModel:
                 self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            pdb.set_trace()
             if self.checkpoint_after and ((i+1) % self.checkpoint_after == 0 or i+1 == len(self.files)):
                 fname = get_tmpfile(f"fasttext_{i+1}.model")
                 print(f"Saving to disk under {fname} after training on {i+1} files")
