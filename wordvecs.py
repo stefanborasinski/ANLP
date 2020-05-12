@@ -8,19 +8,22 @@ import numpy as np
 from nltk.tokenize import word_tokenize as tokenize
 import pdb
 
+
 class TxtIter(object):
-    
-    def __init__(self,filepath):
+
+    def __init__(self, filepath):
         self.filepath = filepath
-    
+
     def __iter__(self):
-        with gensim.utils.open(self.filepath,'r',encoding='utf-8') as fin:
+        with gensim.utils.open(self.filepath, 'r', encoding='utf-8') as fin:
             for line in fin:
                 yield list(tokenize(line))
 
+
 class LanguageModel:
-    
-    def __init__(self, mode, embfilepath, training_dir=None, files=[],verbose=False,checkpoint_after=None,test_after=False, scc_reader=None):
+
+    def __init__(self, mode, embfilepath, training_dir=None, files=[], verbose=False, checkpoint_after=None,
+                 test_after=False, scc_reader=None):
         self.mode = mode
         self.oovwords = []
         self.verbose = verbose
@@ -34,52 +37,53 @@ class LanguageModel:
         if mode == "fasttext":
             self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
             self.func = self._fasttext
-            if training_dir is not None and len(files)>0:
+            if training_dir is not None and len(files) > 0:
                 self.training_dir = training_dir
                 self.files = files
                 self.train()
-        
-    def __str__(self,processedfiles=None):
+
+    def __str__(self, processedfiles=None):
         if not processedfiles:
             return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
         else:
             return f"{self.mode} trained on {processedfiles} files"
-    
+
     def train(self):
         for i, afile in enumerate(self.files):
-            
+
             if self.verbose:
-                print(f"{i+1}/{len(self.files)} Processing {afile}")
+                print(f"{i + 1}/{len(self.files)} Processing {afile}")
             filepath = os.path.join(self.training_dir, afile)
             try:
                 num_lines = sum(1 for line in open(filepath))
-                txtfile = TxtIter(filepath) 
+                txtfile = TxtIter(filepath)
                 self.embedding.build_vocab(sentences=txtfile, update=True)
-                self.embedding.train(sentences=txtfile, total_examples=num_lines,epochs=self.embedding.epochs)
+                self.embedding.train(sentences=txtfile, total_examples=num_lines, epochs=self.embedding.epochs)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            if self.checkpoint_after and ((i+1) % self.checkpoint_after == 0 or i+1 == len(self.files)):
-                fname = get_tmpfile(f"fasttext_{i+1}.model")
-                print(f"Saving to disk under {fname} after training on {i+1} files")
+            if self.checkpoint_after and ((i + 1) % self.checkpoint_after == 0 or i + 1 == len(self.files)):
+                fname = get_tmpfile(f"fasttext_{i + 1}.model")
+                print(f"Saving to disk under {fname} after training on {i + 1} files")
                 self.embedding.save(fname)
                 cwd = os.getcwd()
                 print("tarring...")
-                os.chdir('/tmp') 
-                os.system(f"tar -zcvf fasttext_{i+1}.tar.gz *fasttext_{i+1}.model* --remove-files")
+                os.chdir('/tmp')
+                os.system(f"tar -zcvf fasttext_{i + 1}.tar.gz *fasttext_{i + 1}.model* --remove-files")
                 print("splitting...")
-                os.system(f"split -b 4000M fasttext_{i+1}.tar.gz 'fasttext_{i+1}.part' && rm -rf fasttext_{i+1}.tar.gz")
+                os.system(
+                    f"split -b 4000M fasttext_{i + 1}.tar.gz 'fasttext_{i + 1}.part' && rm -rf fasttext_{i + 1}.tar.gz")
                 print("uploading and saving link to gdrive...")
                 for f in sorted(os.listdir()):
-                    if f'fasttext_{i+1}' in f:
-                        os.system(f"echo '{str(datetime.datetime.now())+': '+f}' >> '/content/ANLP/linklist.txt' ")
+                    if f'fasttext_{i + 1}' in f:
+                        os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ")
                         os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
                 os.chdir(cwd)
                 if self.test_after:
-                    self.test(i+1)
-                    os.system(f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i+1} to results.log' && git push origin master")
-                    
-            
-    def test(self,processedfiles=None):
+                    self.test(i + 1)
+                    os.system(
+                        f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i + 1} to results.log' && git push origin master")
+
+    def test(self, processedfiles=None):
         acc = 0
         correct, incorrect = [], []
         for question in self.scc.questions:
@@ -114,8 +118,6 @@ class LanguageModel:
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
         log_results(self.__str__(processedfiles), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
 
-        
-    
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
             word_vec.append(self.embedding[word])
@@ -125,7 +127,7 @@ class LanguageModel:
             if word not in self.oovwords:
                 self.oovwords.append(word)
         return word_vec
-    
+
     def _fasttext(self, word, word_vec):
         word_vec.append(self.embedding[word])
         if word not in self.embedding.wv.vocab and word not in self.oovwords:
@@ -137,7 +139,6 @@ class LanguageModel:
         for word in words:
             word_vec = self.func(word, word_vec)
         return word_vec
-        
 
     def total_similarity(self, vec, q_vec):
         score = 0
@@ -145,6 +146,7 @@ class LanguageModel:
             score += (1 - spatial.distance.cosine(vec, v))
         # sum score of distance between vector for every word in question and vector for answer
         return score
+
 
 if __name__ == '__main__':
     parser = get_default_argument_parser()
@@ -154,13 +156,14 @@ if __name__ == '__main__':
                         help='whether or not to test after checkpointing')
     args = parser.parse_args()
     config = load_json(args.config)
-    training, _ = get_training_testing(config[args.mode]['training_dir'],split=1)
+    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
     if args.max_files is not None:
         training = training[:args.max_files]
     args.files = training
     scc = scc_reader()
     print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
-    lm = LanguageModel(args.mode, files=args.files,verbose= args.verbose,checkpoint_after=args.checkpoint_after,test_after=args.test_after,scc_reader=scc, **config[args.mode])
+    lm = LanguageModel(args.mode, files=args.files, verbose=args.verbose, checkpoint_after=args.checkpoint_after,
+                       test_after=args.test_after, scc_reader=scc, **config[args.mode])
     if not args.test_after:
         print("Answering questions...")
         lm.test()

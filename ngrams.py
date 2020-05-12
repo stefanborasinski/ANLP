@@ -3,15 +3,18 @@ import numpy as np
 from scc import *
 from utils import *
 from nltk.tokenize import word_tokenize as tokenize
+import pdb
 
 
 class LanguageModel:
 
-    def __init__(self, training_dir, files=[], verbose=False):
+    def __init__(self, training_dir, methodparams, files=[], verbose=False, scc_reader=None):
         self.training_dir = training_dir
+        self.scc = scc_reader
         self.files = files
         self.verbose = verbose
         self.train()
+        self.mp = methodparams
 
     def __str__(self):
         return f"ngram trained on {len(self.files)} files"
@@ -24,6 +27,35 @@ class LanguageModel:
         self._make_unknowns()
         self._discount()
         self._convert_to_probs()
+
+    def test(self):
+        acc = 0
+        correct, incorrect, guessed = [], [], []
+        for question in self.scc.questions:
+            scores = []
+            for key in self.scc.keys:
+                answord = question.get_field(key)
+                q = question.make_sentence(answord)
+                s, _ = self.compute_prob_line(q)
+                scores.append(s)
+            maxs = max(scores)
+            filtscores = [i for i, j in enumerate(scores) if j == maxs]
+            idx = np.random.choice(filtscores)  # find index/indices of answers with max score
+            qid = question.get_field("id")
+            if len(filtscores) > 1:
+                guessed.append((qid, len(filtscores)))
+            answer = scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
+            outcome = answer == question.get_field("answer")
+            if outcome:
+                acc += 1
+                correct.append(qid)
+            else:
+                incorrect.append(qid)
+            if self.verbose:
+                print(
+                    f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
+        log_results(args.mode + " " + self.__str__(), acc, len(scc.questions), correct,
+                    incorrect, perplexity=self.compute_perplexity(), guessed=guessed)
 
     def _processline(self, line):
         tokens = ["__START"] + tokenize(line) + ["__END"]
@@ -38,7 +70,7 @@ class LanguageModel:
     def _processfiles(self):
         for i, afile in enumerate(self.files):
             if self.verbose:
-                print(f"{i+1}/{len(self.files)} Processing {afile}")
+                print(f"{i + 1}/{len(self.files)} Processing {afile}")
             try:
                 with open(os.path.join(self.training_dir, afile)) as instream:
                     for line in instream:
@@ -55,11 +87,11 @@ class LanguageModel:
                        self.bigram.items()}
         self.kn = {k: v / sum(self.kn.values()) for (k, v) in self.kn.items()}
 
-    def get_prob(self, token, context="", methodparams={}):
-        if methodparams.get("method", "unigram") == "unigram":
+    def get_prob(self, token, context=""):
+        if self.mp.get("method", "unigram") == "unigram":
             return self.unigram.get(token, self.unigram.get("__UNK", 0))
         else:
-            if methodparams.get("smoothing", "kneser-ney") == "kneser-ney":
+            if self.mp.get("smoothing", "kneser-ney") == "kneser-ney":
                 unidist = self.kn
             else:
                 unidist = self.unigram
@@ -71,7 +103,7 @@ class LanguageModel:
             p = big_p + lmbda * uni_p
             return p
 
-    def compute_prob_line(self, line, methodparams={}):
+    def compute_prob_line(self, line):
         # this will add _start to the beginning of a line of text
         # compute the probability of the line according to the desired model
         # and returns probability together with number of tokens
@@ -79,7 +111,7 @@ class LanguageModel:
         tokens = ["__START"] + tokenize(line) + ["__END"]
         acc = 0
         for i, token in enumerate(tokens[1:]):
-            acc += math.log(self.get_prob(token, tokens[:i + 1], methodparams))
+            acc += math.log(self.get_prob(token, tokens[:i + 1]))
         return acc, len(tokens[1:])
 
     def _make_unknowns(self, known=2):
@@ -121,6 +153,34 @@ class LanguageModel:
             for kk in adict.keys():
                 self.kn[kk] = self.kn.get(kk, 0) + 1
 
+    def compute_perplexity(self):
+
+        # compute the probability and length of the corpus
+        # calculate perplexity
+        # lower perplexity means that the model better explains the data
+
+        p, N = self.compute_probability()
+        # print(p,N)
+        pp = math.exp(-p / N)
+        return pp
+
+    def compute_probability(self):
+        # computes the probability (and length) of a corpus contained in filenames
+        total_p = 0
+        total_N = 0
+        for i, afile in enumerate(self.files):
+            try:
+                with open(os.path.join(self.training_dir, afile)) as instream:
+                    for line in instream:
+                        line = line.rstrip()
+                        if len(line) > 0:
+                            p, N = self.compute_prob_line(line)
+                            total_p += p
+                            total_N += N
+            except UnicodeDecodeError:
+                print("UnicodeDecodeError processing file {}: ignoring rest of file".format(afile))
+        return total_p, total_N
+
 
 if __name__ == "__main__":
 
@@ -135,37 +195,14 @@ if __name__ == "__main__":
     if len(mp) == 0:
         print(f"Method parameters not found for {args.mode}. Terminating...")
         quit()
-    training, _ = get_training_testing(split=1)
+    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
 
     start = time.time()
-    print(f"Training {args.mode} on {args.max_files if args.max_files is not None else len(training)} files.")
-    ngram = LanguageModel(files=training[:args.max_files], verbose=args.verbose, **config[args.mode])
     scc = scc_reader()
-    acc = 0
-    correct, incorrect = [], []
-
+    print(f"Training {args.mode} on {args.max_files if args.max_files is not None else len(training)} files.")
+    ngram = LanguageModel(training_dir=config[args.mode]['training_dir'], files=training[:args.max_files],
+                          verbose=args.verbose, scc_reader=scc, methodparams=mp)
     print("Answering questions...")
-    for question in scc.questions:
-        scores = []
-        for key in scc.keys:
-            answord = question.get_field(key)
-            q = question.make_sentence(answord)
-            s, _ = ngram.compute_prob_line(q, methodparams=mp)
-            scores.append(s)
-        maxs = max(scores)
-        idx = np.random.choice(
-            [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
-        answer = scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
-        qid = question.get_field("id")
-        outcome = answer == question.get_field("answer")
-        if outcome:
-            acc += 1
-            correct.append(qid)
-        else:
-            incorrect.append(qid)
-        if args.verbose:
-            print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]),highlight=True)}")
-    log_results(args.mode + " " + ngram.__str__(), acc, len(scc.questions), correct,
-                incorrect)
+    ngram.test()
     endtime = time.time() - start
-    print(f"Total run time: {endtime:.1f}s, {endtime/60:.1f}m")
+    print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
