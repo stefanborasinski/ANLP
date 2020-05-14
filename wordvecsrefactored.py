@@ -94,8 +94,7 @@ class LanguageModel:
         fullsubdirpath = cwd+'/'+subdirstr
         if not os.path.exists(fullsubdirpath):
             os.mkdir(subdirstr)
-            pdb.set_trace()
-            for file in enumerate(self.files,1):
+            for file in self.files:
                 os.system(f"cp -r {file} {fullsubdirpath}")
 
         self.training_dir = fullsubdirpath  
@@ -177,7 +176,7 @@ if __name__ == '__main__':
     if args.vector_from != "pretrained":
         training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
         if args.max_files is not None:
-            training = training[:args.max_files]
+            training = training[1:args.max_files+1]
         config['files'] = training
     scc = scc_reader()
     print(f'Getting {args.mode} {args.vector_from} model...')
