@@ -6,8 +6,7 @@ https://file.io/hF0OPMqp
 https://file.io/soLd7s8x
 2020-05-14 23:18:07.135328: word2vec_scratch_skip_508.partaa
 https://file.io/prc4wmNG
-
-2020-05-14 23:46:25.571654: word2vec_scratch_cbow_126.partaa
-https://file.io/yM6WslPa
 2020-05-14 23:50:58.015274: word2vec_scratch_cbow_126.partaa
 https://file.io/Q1kko1OX
+2020-05-14 23:55:56.465633: word2vec_scratch_cbow_251.partaa
+https://file.io/sbF8W0iK
