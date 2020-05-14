@@ -9,7 +9,8 @@
     "training_dir":"cleaned_data/Holmes_Training_Data"
 },
 "word2vec": {
-    "embfilepath": "embeddings/GoogleNews-vectors-negative300.bin"
+    "embfilepath": "embeddings/GoogleNews-vectors-negative300.bin",
+    "training_dir":"/content/ANLP/cleaned_data/htd_clean_lines_nopunc"
 },
 "fasttext": {
     "embfilepath": "embeddings/wiki-news-300d-1M-subword.bin",

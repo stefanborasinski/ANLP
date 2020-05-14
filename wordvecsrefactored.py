@@ -165,10 +165,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
     start = time.time()
     config = load_json(args.config)
-    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
-    if args.max_files is not None:
-        training = training[:args.max_files]
-    config['files'] = training
+    if args.vector_from != "pretrained":
+        training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
+        if args.max_files is not None:
+            training = training[:args.max_files]
+        config['files'] = training
     scc = scc_reader()
     print(f'Loading model...')
     lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose,kwargdict=config)
