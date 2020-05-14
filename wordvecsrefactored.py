@@ -13,7 +13,10 @@ class LanguageModel:
 
     def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=True):
         self.mode = mode.lower()
-        self.training_algorithm = 1 if "skip" in training_algorithm.lower() else self.training_algorithm = 0 
+        if "skip" in training_algorithm.lower():
+            self.training_algorithm = 1
+        else:
+            self.training_algorithm = 0
         self.vector_from = vector_from.lower()
         self.scc = scc_reader
         self.verbose = verbose
