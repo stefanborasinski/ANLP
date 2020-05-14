@@ -8,8 +8,8 @@ def get_training_testing(training_dir, split=1.0):
     filenames = sorted(os.listdir(training_dir))
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
-    random.seed(53)  # if you want the same random split every time
-    random.shuffle(filenames)
+    #random.seed(53)  # if you want the same random split every time since working on colab seeding doesn't work - only way to ensure same order is alphabetical sorting
+    #random.shuffle(filenames)
     index = int(n * split)
     trainingfiles = filenames[:index]
     heldoutfiles = filenames[index:]

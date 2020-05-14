@@ -19,12 +19,12 @@ class LanguageModel:
             self.processing_func = self._fasttext
         if training_algorithm is not None:
             if "skip" in training_algorithm.lower():
-                self.training_algorithm = 1
+                self.training_algorithm = 1 #select skip-gram
             else:
-                self.training_algorithm = 0
+                self.training_algorithm = 0 #select continuous bag of words
         else:
             self.training_algorithm = training_algorithm
-        self.vector_from = vector_from.lower()
+        self.vector_from = vector_from.lower() #are we getting the vector from scratch, a pre-trained vector or are we fine-tuning a vector
         self.scc = scc_reader
         self.verbose = verbose
         self.kwargs = kwargdict
@@ -33,12 +33,12 @@ class LanguageModel:
         self.embedding = None
         self.oovwords = []
         
-        if self.vector_from != "scratch":
+        if self.vector_from != "scratch": #if using pre-trained vector
             if self.mode == "word2vec":
                 self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs[self.mode]['embfilepath'], binary=True)
             else:
                 self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs[self.mode]['embfilepath'])
-                if "fine" in self.vector_from:
+                if "fine" in self.vector_from: #if finetuning pre-trained vector (fasttext only)
                     self.train()
         else:
             self.train()
@@ -48,14 +48,14 @@ class LanguageModel:
         
             
     def train(self):
-        if len(self.files)<len(os.listdir(self.training_dir)):
+        if len(self.files)<len(os.listdir(self.training_dir)): #if max files is fewer than in training dir, make subdir with only those files for quicker training
             self._subdivide_training()
         if self.mode == "word2vec":
                self.embedding = gensim.models.Word2Vec(gensim.models.word2vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
         else:
-            if self.embedding is None:
+            if self.embedding is None: #if training fasttext from scratch
                 self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
-            else:
+            else: #if finetuning fasttext
                 for i, afile in enumerate(self.files):
                     if self.verbose:
                         print(f"{i + 1}/{len(self.files)} Processing {afile}")
@@ -67,6 +67,7 @@ class LanguageModel:
                     except UnicodeDecodeError:
                         print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
         
+        #save trained model and upload tarred model to file.io where it can be downloaded (only once) later for continued training/testing if necessary
         filestr = self.mode+'_'+str(self.vector_from)+'_'+str(len(self.files))
         fname = get_tmpfile(f"{filestr}.model")
         print(f"Saving to disk under {fname}")
@@ -81,13 +82,13 @@ class LanguageModel:
         print("uploading and saving link to repository...")
         for f in sorted(os.listdir()):
             if f'{filestr}' in f:
-                os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ")
+                os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ") #save link to uploaded model in repository txt file
                 os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
         os.chdir(cwd)
         os.system("rm -rf *subdir*")
         
 
-    def _subdivide_training(self):
+    def _subdivide_training(self): #make subdirectory of limited training files for pathlinesentence to use
         
         os.chdir(self.training_dir)
         cwd = os.getcwd()
@@ -98,8 +99,37 @@ class LanguageModel:
             for file in self.files:
                 os.system(f"cp -r {file} {fullsubdirpath}")
 
-        self.training_dir = fullsubdirpath  
+        self.training_dir = fullsubdirpath
         
+    def get_wordvec(self, words):
+        word_vec = []
+        for word in words:
+            word_vec = self.processing_func(word, word_vec)
+        return word_vec
+
+    def _word2vec(self, word, word_vec):
+        if word in self.embedding:
+            word_vec.append(self.embedding[word])
+        else:
+            word_vec.append(
+                np.random.uniform(-0.25, 0.25, self.embedding['word'].size))  # if word not in embedding then randomly output its vector
+            if word not in self.oovwords:
+                self.oovwords.append(word)
+        return word_vec
+
+    def _fasttext(self, word, word_vec):
+        word_vec.append(self.embedding[word])
+        if word not in self.embedding.wv.vocab and word not in self.oovwords:
+            self.oovwords.append(word)
+        return word_vec
+
+    def total_similarity(self, vec, q_vec):
+        score = 0
+        for v in q_vec:
+            score += (1 - spatial.distance.cosine(vec, v))
+        # sum score of distance between vector for every word in question and vector for answer
+        return score
+    
     def test(self):
         acc = 0
         correct, incorrect = [], []
@@ -135,36 +165,6 @@ class LanguageModel:
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
         log_results(self.__str__(), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
 
-    def _word2vec(self, word, word_vec):
-        if word in self.embedding:
-            word_vec.append(self.embedding[word])
-        else:
-            word_vec.append(
-                np.random.uniform(-0.25, 0.25, self.embedding['word'].size))  # if word not in embedding then randomly output its vector
-            if word not in self.oovwords:
-                self.oovwords.append(word)
-        return word_vec
-
-    def _fasttext(self, word, word_vec):
-        word_vec.append(self.embedding[word])
-        if word not in self.embedding.wv.vocab and word not in self.oovwords:
-            self.oovwords.append(word)
-        return word_vec
-
-    def get_wordvec(self, words):
-        word_vec = []
-        for word in words:
-            word_vec = self.processing_func(word, word_vec)
-        return word_vec
-
-    def total_similarity(self, vec, q_vec):
-        score = 0
-        for v in q_vec:
-            score += (1 - spatial.distance.cosine(vec, v))
-        # sum score of distance between vector for every word in question and vector for answer
-        return score
-
-
 if __name__ == '__main__':
     parser = get_default_argument_parser()
     parser.add_argument('-ta', '--training_algorithm', default=None, type=str,
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     config = load_json(args.config)
     if args.vector_from != "pretrained":
         training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
-        training = training[1:]
+        training = training[1:] #quick workaround to avoid persistent .ipynb_checkpoint file that has cropped up in training directory
         if args.max_files is not None:
             training = training[:args.max_files+1]
         config['files'] = training
