@@ -9,30 +9,29 @@ if __name__ == '__main__':
     parser = get_default_argument_parser()
     args = parser.parse_args()
     print(f'Loading roberta')
-    roberta = torch.hub.load('pytorch/fairseq', 'roberta.large')
+    roberta = torch.hub.load('pytorch/fairseq', args.mode) #load either roberta.base or roberta.large
     scc = scc_reader()
 
-    guessed = []
     acc = 0
-    correct, incorrect = [], []
+    correct, incorrect, guessed = [], [], []
     topk = 49500
     start = time.time()
 
     for question in scc.questions:
         q = question.get_field("question").replace("_____", "TEMPMASK")
         translator = str.maketrans('', '', string.punctuation)
-        q = q.translate(translator)
-        q = q.replace("TEMPMASK", "<mask>")
-        rob_masks = roberta.fill_mask(q, topk=topk)
-        rob_ranks = [mask[2] for mask in rob_masks]
+        q = q.translate(translator) #strip question of punctuation
+        q = q.replace("TEMPMASK", "<mask>") #replace space for candidate token with mask token
+        rob_masks = roberta.fill_mask(q, topk=topk) #get list of top k fill mask candidates
+        rob_ranks = [mask[2] for mask in rob_masks] #filter for tokens
         candidates = [question.get_field(ak) for ak in scc.keys]
         ans_ranks = []
         for i, candidate in enumerate(candidates):
             if candidate in rob_ranks:
-                ans_ranks.append(rob_ranks.index(candidate))
+                ans_ranks.append(rob_ranks.index(candidate)) #if candidate is found, get top k ranking
             else:
-                ans_ranks.append(topk)
-        mins = min(ans_ranks)
+                ans_ranks.append(topk) #if not found assign lowest value, the topk parameter itself
+        mins = min(ans_ranks) #filter for top ranking candidate
         idx = np.random.choice([i for i, j in enumerate(ans_ranks) if j == mins])
         answer = scc.keys[idx][0]
         qid = question.get_field('id')
@@ -42,7 +41,7 @@ if __name__ == '__main__':
             correct.append(qid)
         else:
             incorrect.append(qid)
-        if len(set(ans_ranks))==1:
+        if len(set(ans_ranks))==1: #if no candidates were found in the top k list record a guess was made
             guessed.append(qid)
         if args.verbose:
             print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")

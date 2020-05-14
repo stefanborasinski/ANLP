@@ -13,7 +13,6 @@ class ResultsLogParser:
                                 "yesterday": datetime.combine(date.today() - timedelta(1), time()),
                                 "start": datetime(2020, 3, 9, 0, 0),
                                 "monday": self._get_weekday("monday"),
-                                "tuesday": self._get_weekday("tuesday"),
                                 "wednesday": self._get_weekday("wednesday"),
                                 "thursday": self._get_weekday("thursday"),
                                 "friday": self._get_weekday("friday"),
@@ -36,11 +35,29 @@ class ResultsLogParser:
                 close = True
         return filtlist, close
 
-    def _split_line(self, line): #split lo
+    def _split_line(self, line): #split line of log into sections based on | divider token
         messages = line.split(r' | ')
         return messages
+    
+    def get_as_list(self, keyword, filtlist=None): #get section of log as a list ie ids of correct sentences, out of vocabulary words
+        results = []
+        idx = self._find_index(keyword)
+        filtlist, close = self._manage_filtlist(filtlist=filtlist)
+        for line in filtlist:
+            try:
+                stringlist = self._split_line(line)[idx]
+            except IndexError:
+                continue
+            reslist = self._dirtystring_to_list(stringlist)
+            results += reslist
+        if close:
+            filtlist.close()
+        try:
+            return sorted(results)
+        except TypeError:
+            return results
 
-    def _dirtystring_to_list(self, dirtystring):
+    def _dirtystring_to_list(self, dirtystring): #turn a string containing a list (and potentially whitespace) as a list
         m = re.search(r'\[([^]]*)\]', dirtystring)
         cleanstring = m.group(0)
         cleanstring = cleanstring.replace("'", '')
@@ -56,7 +73,7 @@ class ResultsLogParser:
             results.append(item)
         return results
 
-    def filter_by_model(self, model, filtlist=None):
+    def filter_by_model(self, model, filtlist=None): #filter log by model name ie word2vec, fasttext, roberta, unigram, bigram etc
 
         results = []
         filtlist, close = self._manage_filtlist(filtlist=filtlist)
@@ -69,9 +86,9 @@ class ResultsLogParser:
             filtlist.close()
 
         self.filtlist = results
-        self.ops += 1
+        self.ops += 1 #increment number of operations performed
 
-    def undo_steps(self, steps):
+    def undo_steps(self, steps): #undo filter history to restore previous state
         if type(steps) == int:
             if steps > 0:
                 if steps <= self.ops:
@@ -94,25 +111,8 @@ class ResultsLogParser:
 
         self.filtlist = copy.deepcopy(self.history[-1])
 
-    def get_as_list(self, keyword, filtlist=None):
-        results = []
-        idx = self._find_index(keyword)
-        filtlist, close = self._manage_filtlist(filtlist=filtlist)
-        for line in filtlist:
-            try:
-                stringlist = self._split_line(line)[idx]
-            except IndexError:
-                continue
-            reslist = self._dirtystring_to_list(stringlist)
-            results += reslist
-        if close:
-            filtlist.close()
-        try:
-            return sorted(results)
-        except TypeError:
-            return results
 
-    def _get_weekday(self, d):
+    def _get_weekday(self, d): #filter log by number of days ago
         weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
         twd = weekdays.index(d)  # get number of target weekday
         cwd = datetime.today().weekday()  # get number of current weekday
@@ -120,7 +120,7 @@ class ResultsLogParser:
         return datetime.combine(date.today() - timedelta(td), time())
 
     def _find_index(self,
-                    search_terms):  # find index of message component, added to give more flexibility in log construction
+                    search_terms):  # find index of message component, added to give more flexibility in log construction. ie correct ids may be index 3 when the log is divided into message sections
         idx = None
         if not isinstance(search_terms, list):
             search_terms = [search_terms]
@@ -137,7 +137,7 @@ class ResultsLogParser:
                     break
         return idx
 
-    def filter_by_time(self, *args, hours_ago=None, since_when=None, filtlist=None):
+    def filter_by_time(self, *args, hours_ago=None, since_when=None, filtlist=None): #filter logs by either a specific numbers if hours ago or since a point in time
         if len(args) == 1:
             compare_dt = datetime(
                 *args[0])  # insert specific datetime in the format expected by datetime ie (2020, 3, 9, 21, 0)

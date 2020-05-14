@@ -194,7 +194,7 @@ if __name__ == "__main__":
     if len(mp) == 0:
         print(f"Method parameters not found for {args.mode}. Terminating...")
         quit()
-    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
+    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1) #use all of training data
 
     start = time.time()
     scc = scc_reader()

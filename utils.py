@@ -1,15 +1,15 @@
 import logging, random, os, json, argparse
 
 logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s | %(message)s', datefmt='%Y-%b-%d %H:%M:%S',
-                    filename="results.log", filemode='a')
+                    filename="results.log", filemode='a') #logging level critical to avoid also logging the warning messages of various models
 logger = logging.getLogger(__name__)
 
 def get_training_testing(training_dir, split=1.0):
     filenames = sorted(os.listdir(training_dir))
     n = len(filenames)
     print("There are {} files in the training directory: {}".format(n, training_dir))
-    #random.seed(53)  # if you want the same random split every time
-    #random.shuffle(filenames)
+    random.seed(53)  # if you want the same random split every time
+    random.shuffle(filenames)
     index = int(n * split)
     trainingfiles = filenames[:index]
     heldoutfiles = filenames[index:]
