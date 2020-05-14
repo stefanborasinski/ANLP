@@ -98,7 +98,7 @@ class LanguageModel:
 
         self.training_dir = fullsubdirpath  
         
-    def test(self, processedfiles=None):
+    def test(self):
         acc = 0
         correct, incorrect = [], []
         for question in self.scc.questions:
@@ -185,4 +185,4 @@ if __name__ == '__main__':
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
     os.system(
-        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode}+'_'+{lm.vector_from}+'_'+{args.training_algorithm if args.training_algorithm  is not None else 'notraining'}+'_'+{len(lm.files) if lm.files  is not None else 'nofiles'} to results.log' && git push origin master")
+        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode}+_+{lm.vector_from}+_+{args.training_algorithm if args.training_algorithm  is not None else 'notraining'}+_+{len(lm.files) if lm.files  is not None else 'nofiles'} to results.log' && git push origin master")
