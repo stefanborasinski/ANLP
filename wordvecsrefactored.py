@@ -13,10 +13,11 @@ class LanguageModel:
 
     def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=True):
         self.mode = mode.lower()
-        if "skip" in training_algorithm.lower():
-            self.training_algorithm = 1
-        else:
-            self.training_algorithm = 0
+        if training_algorithm is not None:
+            if "skip" in training_algorithm.lower():
+                self.training_algorithm = 1
+            else:
+                self.training_algorithm = 0
         self.vector_from = vector_from.lower()
         self.scc = scc_reader
         self.verbose = verbose
@@ -77,6 +78,7 @@ class LanguageModel:
                 os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ")
                 os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
         os.chdir(cwd)
+        os.system("rm -rf *subdir*")
         
 
     def _subdivide_training(self):
@@ -172,7 +174,7 @@ if __name__ == '__main__':
         config['files'] = training
     scc = scc_reader()
     print(f'Loading model...')
-    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose,kwargdict=config)
+    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose, scc_reader=scc, kwargdict=config)
     print("Answering questions...")
     lm.test()
     endtime = time.time() - start
