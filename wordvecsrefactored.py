@@ -24,7 +24,7 @@ class LanguageModel:
         self.scc = scc_reader
         self.verbose = verbose
         self.kwargs = kwargdict
-        self.training_dir = kwargdict.get('training_dir',None)
+        self.training_dir = kwargdict[self.mode].get('training_dir',None)
         self.files = kwargdict.get('files',None)
         self.embedding = None
         self.oovwords = []
@@ -50,7 +50,7 @@ class LanguageModel:
         if len(self.files)<len(os.listdir(self.training_dir)):
             self._subdivide_training()
         if self.mode == "word2vec":
-               self.embedding = gensim.models.Word2Vec(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
+               self.embedding = gensim.models.Word2Vec(gensim.models.word2vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
         else:
             if self.embedding is None:
                 self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
@@ -90,11 +90,13 @@ class LanguageModel:
         
         os.chdir(self.training_dir)
         cwd = os.getcwd()
-        subdirstr = f'subdir_{len(self.files)}' 
-        os.mkdir(subdirstr)
+        subdirstr = f'subdir_{len(self.files)}'
         fullsubdirpath = cwd+'/'+subdirstr
-        for file in enumerate(self.files,1):
-            os.system(f"cp -r {file} {fullsubdirpath}")
+        if not os.path.exists(fullsubdirpath):
+            os.mkdir(subdirstr)
+            pdb.set_trace()
+            for file in enumerate(self.files,1):
+                os.system(f"cp -r {file} {fullsubdirpath}")
 
         self.training_dir = fullsubdirpath  
         
