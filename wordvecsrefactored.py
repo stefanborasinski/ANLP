@@ -30,36 +30,28 @@ class LanguageModel:
                 self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
                 self.processing_func = self._fasttext
                 if self.vector_from == "finetuning":
-                    self.train(self.kwargs['test_after'])
+                    self.train()
         else:
-            self.train(self.kwargs['test_after'])
+            self.train()
             
             
 
-    def train(self,test_after):
-        subdirs = self.subdivide_training(test_after) if test_after is not None
-        if self.embedding is None:
-            if self.mode == "word2vec":
-                    
+    def train(self):
+        if len(self.files)<len(os.listdir(self.training_dir)):
+            _subdivide_training()
+        if self.mode == "word2vec":
+               self.embedding = gensim.models.Word2Vec(gensim.models.Word2Vec.PathLineSentences(self.training_dir),self.kwargs.get('size',300),self.kwargs.get('window',10),self.kwargs.get('min_count',3))
     
-    def subdivide_training(self,corpus_split):
-        fullsubdirpaths = []
-        divide_after = np.ceil(len(self.files)*corpus_split) if corpus_split < 1 else divide after = corpus_split
+
+    def _subdivide_training(self):
         os.chdir(self.training_dir)
         cwd = os.getcwd()
-        subdirstr = 'subdir_0' 
+        subdirstr = f'subdir_{len(self.files)}' 
         os.mkdir(subdirstr)
         fullsubdirpath = cwd+'/'+subdirstr
-        fullsubdirpaths.append(fullsubdirpath)
-        for i, file in enumerate(self.files,1):
-            if i % divide_after == 0:
-                subdirstr = f'subdir_{i}' 
-                os.mkdir(subdirstr)
-                fullsubdirpath = cwd+'/'+subdirstr
-                fullsubdirpaths.append(fullsubdirpath)
+        for file in enumerate(self.files,1):
             os.system(f"cp -r {file} {fullsubdirpath}")
-        
-        return fullsubdirpaths
-            
+
+        self.training_dir = fullsubdirpath  
         
         
