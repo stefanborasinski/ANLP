@@ -1,12 +1,12 @@
 {
   "unigram": {
       "method": "unigram",
-      "training_dir":"cleaned_data/Holmes_Training_Data"
+      "training_dir":"/content/ANLP/cleaned_data/htd_clean_lines_nopunc"
 },
 "bigram": {
   "method": "bigram",
   "smoothing": "kneser-ney",
-    "training_dir":"cleaned_data/Holmes_Training_Data"
+    "training_dir":"/content/ANLP/cleaned_data/htd_clean_lines_nopunc"
 },
 "word2vec": {
     "embfilepath": "embeddings/GoogleNews-vectors-negative300.bin",

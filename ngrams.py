@@ -28,17 +28,17 @@ class LanguageModel:
         self._convert_to_probs()
         
     def _processfiles(self):
-    for i, afile in enumerate(self.files):
-        if self.verbose:
-            print(f"{i + 1}/{len(self.files)} Processing {afile}")
-        try:
-            with open(os.path.join(self.training_dir, afile)) as instream:
-                for line in instream:
-                    line = line.rstrip()
-                    if len(line) > 0:
-                        self._processline(line)
-        except UnicodeDecodeError:
-            print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+        for i, afile in enumerate(self.files):
+            if self.verbose:
+                print(f"{i + 1}/{len(self.files)} Processing {afile}")
+            try:
+                with open(os.path.join(self.training_dir, afile)) as instream:
+                    for line in instream:
+                        line = line.rstrip()
+                        if len(line) > 0:
+                            self._processline(line)
+            except UnicodeDecodeError:
+                print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
             
     def _processline(self, line):
         tokens = ["__START"] + tokenize(line) + ["__END"]
@@ -123,6 +123,34 @@ class LanguageModel:
             except UnicodeDecodeError:
                 print("UnicodeDecodeError processing file {}: ignoring rest of file".format(afile))
         return total_p, total_N
+    
+    def compute_prob_line(self, line):
+        # this will add _start to the beginning of a line of text
+        # compute the probability of the line according to the desired model
+        # and returns probability together with number of tokens
+
+        tokens = ["__START"] + tokenize(line) + ["__END"]
+        acc = 0
+        for i, token in enumerate(tokens[1:]):
+            acc += math.log(self.get_prob(token, tokens[:i + 1]))
+        return acc, len(tokens[1:])
+    
+    def get_prob(self, token, context=""):
+        
+        if self.mp.get("method", "unigram") == "unigram":
+            return self.unigram.get(token, self.unigram.get("__UNK", 0))
+        else:
+            if self.mp.get("smoothing", "kneser-ney") == "kneser-ney":
+                unidist = self.kn
+            else:
+                unidist = self.unigram
+            bigram = self.bigram.get(context[-1], self.bigram.get("__UNK", {}))
+            big_p = bigram.get(token, bigram.get("__UNK", 0))
+            lmbda = bigram["__DISCOUNT"]
+            uni_p = unidist.get(token, unidist.get("__UNK", 0))
+            # print(big_p,lmbda,uni_p)
+            p = big_p + lmbda * uni_p
+            return p
 
     def test(self):
         acc = 0
@@ -152,37 +180,6 @@ class LanguageModel:
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
         log_results(args.mode + " " + self.__str__(), acc, len(scc.questions), correct,
                     incorrect, perplexity=self.compute_perplexity(), guessed=guessed)
-
-
-
-
-    def get_prob(self, token, context=""):
-        if self.mp.get("method", "unigram") == "unigram":
-            return self.unigram.get(token, self.unigram.get("__UNK", 0))
-        else:
-            if self.mp.get("smoothing", "kneser-ney") == "kneser-ney":
-                unidist = self.kn
-            else:
-                unidist = self.unigram
-            bigram = self.bigram.get(context[-1], self.bigram.get("__UNK", {}))
-            big_p = bigram.get(token, bigram.get("__UNK", 0))
-            lmbda = bigram["__DISCOUNT"]
-            uni_p = unidist.get(token, unidist.get("__UNK", 0))
-            # print(big_p,lmbda,uni_p)
-            p = big_p + lmbda * uni_p
-            return p
-
-    def compute_prob_line(self, line):
-        # this will add _start to the beginning of a line of text
-        # compute the probability of the line according to the desired model
-        # and returns probability together with number of tokens
-
-        tokens = ["__START"] + tokenize(line) + ["__END"]
-        acc = 0
-        for i, token in enumerate(tokens[1:]):
-            acc += math.log(self.get_prob(token, tokens[:i + 1]))
-        return acc, len(tokens[1:])
-
 
 if __name__ == "__main__":
 
