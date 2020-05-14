@@ -18,6 +18,8 @@ class LanguageModel:
                 self.training_algorithm = 1
             else:
                 self.training_algorithm = 0
+        else:
+            self.training_algorithm = training_algorithm
         self.vector_from = vector_from.lower()
         self.scc = scc_reader
         self.verbose = verbose
@@ -41,7 +43,7 @@ class LanguageModel:
             self.train()
             
     def __str__(self):
-        return f"{self.mode} {self.vector_from} skipgram:{self.training_algorithm if self.training_algorithm is not None else 'no word vectors learnt'} trained files:{len(self.files) if self.files is not None else 'no word vectors learnt'}"
+        return f"{self.mode} {self.vector_from} skipgram:{self.training_algorithm if self.training_algorithm is not None else None} trained files:{len(self.files) if self.files is not None else None}"
         
             
     def train(self):
@@ -183,4 +185,4 @@ if __name__ == '__main__':
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
     os.system(
-        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode+'_'+lm.vector_from+'_'+len(lm.files)} to results.log' && git push origin master")
+        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode}+'_'+{lm.vector_from}+'_'+{args.training_algorithm if args.training_algorithm  is not None else 'notraining'}+'_'+{len(lm.files) if lm.files  is not None else 'nofiles'} to results.log' && git push origin master")
