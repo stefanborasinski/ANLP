@@ -25,14 +25,15 @@ class LanguageModel:
         self.training_dir = kwargdict.get('training_dir',None)
         self.files = kwargdict.get('files',None)
         self.embedding = None
+        self.oovwords = []
         
         if self.vector_from != "scratch":
             if self.mode == "word2vec":
-                self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs['embfilepath'], binary=True)
+                self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs[self.mode]['embfilepath'], binary=True)
                 self.dim = self.embedding['word'].size
                 self.processing_func = self._word2vec
             else:
-                self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs['embfilepath'])
+                self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs[self.mode]['embfilepath'])
                 self.processing_func = self._fasttext
                 if "fine" in self.vector_from:
                     self.train()
@@ -173,7 +174,7 @@ if __name__ == '__main__':
             training = training[:args.max_files]
         config['files'] = training
     scc = scc_reader()
-    print(f'Loading model...')
+    print(f'Loading {args.mode} {args.vector_from} model...')
     lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose, scc_reader=scc, kwargdict=config)
     print("Answering questions...")
     lm.test()
