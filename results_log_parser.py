@@ -20,7 +20,7 @@ class ResultsLogParser:
                                 "saturday": self._get_weekday("saturday"),
                                 "sunday": self._get_weekday("sunday")}
 
-    def get_all(self):
+    def get_all(self): #read all lines from log file
         with open(self.log_path, "r") as filtlist:
             all_results = [line for line in filtlist]
         self.filtlist = all_results
@@ -28,15 +28,15 @@ class ResultsLogParser:
     def _manage_filtlist(self, filtlist=None):
         close = None
         if filtlist is None:
-            filtlist = self.filtlist
+            filtlist = self.filtlist #look for existing log list
             if filtlist is not None:
-                self.history.append(copy.deepcopy(filtlist))
+                self.history.append(copy.deepcopy(filtlist)) #append current loglist to history in preparation for alteration
             else:
-                filtlist = open(self.log_path, "r")
+                filtlist = open(self.log_path, "r") #if no loglist found yet list hasn't been initiated, read from file
                 close = True
         return filtlist, close
 
-    def _split_line(self, line):
+    def _split_line(self, line): #split lo
         messages = line.split(r' | ')
         return messages
 
