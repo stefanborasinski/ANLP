@@ -40,8 +40,10 @@ class LanguageModel:
         else:
             self.train()
             
+    def __str__(self):
+        return f'{self.mode} {self.vector_from} skipgram:{self.training_algorithm} trained files:{len(self.files) if self.files is not None else None}'
+        
             
-
     def train(self):
         if len(self.files)<len(os.listdir(self.training_dir)):
             _subdivide_training()
@@ -127,7 +129,7 @@ class LanguageModel:
             if self.verbose:
                 print(
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
-        log_results(self.__str__(processedfiles), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
+        log_results(self.__str__(), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
 
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
@@ -174,7 +176,7 @@ if __name__ == '__main__':
             training = training[:args.max_files]
         config['files'] = training
     scc = scc_reader()
-    print(f'Loading {args.mode} {args.vector_from} model...')
+    print(f'Getting {args.mode} {args.vector_from} model...')
     lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose, scc_reader=scc, kwargdict=config)
     print("Answering questions...")
     lm.test()
