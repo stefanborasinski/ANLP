@@ -68,7 +68,7 @@ class LanguageModel:
                         print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
         
         #save trained model and upload tarred model to file.io where it can be downloaded (only once) later for continued training/testing if necessary
-        filestr = self.mode+'_'+str(self.vector_from)+'_'+str(len(self.files))
+        filestr = f"{self.mode}_{str(self.vector_from)}_{'skipgram' if self.training_algorithm  == 1 else 'cbow'}_{str(len(self.files))}"
         fname = get_tmpfile(f"{filestr}.model")
         print(f"Saving to disk under {fname}")
         self.embedding.save(fname)
