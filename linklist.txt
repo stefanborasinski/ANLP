@@ -4,3 +4,5 @@ https://file.io/96lUyca0
 https://file.io/hF0OPMqp
 2020-05-14 21:45:53.574053: word2vec_scratch_376.partaa
 https://file.io/soLd7s8x
+2020-05-14 23:18:07.135328: word2vec_scratch_508.partaa
+https://file.io/prc4wmNG
