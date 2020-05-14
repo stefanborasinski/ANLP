@@ -13,6 +13,10 @@ class LanguageModel:
 
     def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=True):
         self.mode = mode.lower()
+        if self.mode == "word2vec":
+            self.processing_func = self._word2vec
+        else:
+            self.processing_func = self._fasttext
         if training_algorithm is not None:
             if "skip" in training_algorithm.lower():
                 self.training_algorithm = 1
@@ -32,11 +36,8 @@ class LanguageModel:
         if self.vector_from != "scratch":
             if self.mode == "word2vec":
                 self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs[self.mode]['embfilepath'], binary=True)
-                self.dim = self.embedding['word'].size
-                self.processing_func = self._word2vec
             else:
                 self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs[self.mode]['embfilepath'])
-                self.processing_func = self._fasttext
                 if "fine" in self.vector_from:
                     self.train()
         else:
@@ -139,7 +140,7 @@ class LanguageModel:
             word_vec.append(self.embedding[word])
         else:
             word_vec.append(
-                np.random.uniform(-0.25, 0.25, self.dim))  # if word not in embedding then randomly output its vector
+                np.random.uniform(-0.25, 0.25, self.embedding['word'].size))  # if word not in embedding then randomly output its vector
             if word not in self.oovwords:
                 self.oovwords.append(word)
         return word_vec
