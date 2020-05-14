@@ -41,7 +41,7 @@ class LanguageModel:
             self.train()
             
     def __str__(self):
-        return f'{self.mode} {self.vector_from} skipgram:{self.training_algorithm} trained files:{len(self.files) if self.files is not None else None}'
+        return f"{self.mode} {self.vector_from} skipgram:{self.training_algorithm if self.training_algorithm is not None else 'no word vectors learnt'} trained files:{len(self.files) if self.files is not None else 'no word vectors learnt'}"
         
             
     def train(self):
