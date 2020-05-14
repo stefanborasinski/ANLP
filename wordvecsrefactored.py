@@ -11,15 +11,15 @@ import multiprocessing
 
 class LanguageModel:
 
-    def __init__(self, mode, training_algorithm, vector_from,scc_reader,verbose=False,**kwargs):
+    def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=False):
         self.mode = mode.lower()
         self.training_algorithm = 1 if "skip" in training_algorithm.lower() else self.training_algorithm = 0 
         self.vector_from = vector_from.lower()
         self.scc = scc_reader
         self.verbose = verbose
-        self.kwargs = kwargs
-        self.training_dir = kwargs.get('training_dir',None)
-        self.files = kwargs.get('files',None)
+        self.kwargs = kwargdict
+        self.training_dir = kwargdict.get('training_dir',None)
+        self.files = kwargdict.get('files',None)
         self.embedding = None
         
         if self.vector_from != "scratch":
@@ -28,9 +28,9 @@ class LanguageModel:
             self.dim = self.embedding['word'].size
             self.processing_func = self._word2vec
             else:
-                self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
+                self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs['embfilepath'])
                 self.processing_func = self._fasttext
-                if self.vector_from == "finetuning":
+                if "fine" in self.vector_from:
                     self.train_and_test()
         else:
             self.train_and_test()
@@ -90,4 +90,87 @@ class LanguageModel:
 
         self.training_dir = fullsubdirpath  
         
-        
+    def test(self, processedfiles=None):
+        acc = 0
+        correct, incorrect = [], []
+        for question in self.scc.questions:
+            q = question.get_field("question")
+            translator = str.maketrans('', '', string.punctuation)
+            q = q.translate(translator)  # strip q of punc, including ____ missing word space
+            tokens = tokenize(q)
+
+            #  get word2vec embedding of tokens in question (excluding answer token)
+            q_vec = self.get_wordvec(tokens)
+
+            #  calculate total word similarity by summing distances between answer token vector and question token vectors
+            scores = []
+            candidates = [question.get_field(ak) for ak in self.scc.keys]  # get answers as strings
+            cand_vecs = self.get_wordvec(candidates)
+            for ans_vec in cand_vecs:
+                s = self.total_similarity(ans_vec, q_vec)
+                scores.append(s)
+            maxs = max(scores)
+            idx = np.random.choice(
+                [i for i, j in enumerate(scores) if j == maxs])  # find index/indices of answers with max score
+            answer = self.scc.keys[idx][0]  # answer is first letter of key w/o accompanying bracket
+            qid = question.get_field("id")
+            outcome = answer == question.get_field("answer")
+            if outcome:
+                acc += 1
+                correct.append(qid)
+            else:
+                incorrect.append(qid)
+            if self.verbose:
+                print(
+                    f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
+        log_results(self.__str__(processedfiles), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
+
+    def _word2vec(self, word, word_vec):
+        if word in self.embedding:
+            word_vec.append(self.embedding[word])
+        else:
+            word_vec.append(
+                np.random.uniform(-0.25, 0.25, self.dim))  # if word not in embedding then randomly output its vector
+            if word not in self.oovwords:
+                self.oovwords.append(word)
+        return word_vec
+
+    def _fasttext(self, word, word_vec):
+        word_vec.append(self.embedding[word])
+        if word not in self.embedding.wv.vocab and word not in self.oovwords:
+            self.oovwords.append(word)
+        return word_vec
+
+    def get_wordvec(self, words):
+        word_vec = []
+        for word in words:
+            word_vec = self.processing_func(word, word_vec)
+        return word_vec
+
+    def total_similarity(self, vec, q_vec):
+        score = 0
+        for v in q_vec:
+            score += (1 - spatial.distance.cosine(vec, v))
+        # sum score of distance between vector for every word in question and vector for answer
+        return score
+
+
+if __name__ == '__main__':
+    parser = get_default_argument_parser()
+    parser.add_argument('-ta', '--training_algorithm', default=None, type=str,
+                        help="learn word vectors via 'skip-gram' or 'cbow' architecture")
+    parser.add_argument('-vf', '--vector_from', default=None, type=str,
+                        help="how the word vector is obtained: either from 'scratch','pretrained' or 'finetuned'")
+    args = parser.parse_args()
+    config = load_json(args.config)
+    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
+    if args.max_files is not None:
+        training = training[:args.max_files]
+    config['files'] = training
+    scc = scc_reader()
+    print(f'Loading model...')
+    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose)
+    if not args.test_after:
+        print("Answering questions...")
+        lm.test()
+        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
