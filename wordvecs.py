@@ -116,7 +116,7 @@ class LanguageModel:
             if self.verbose:
                 print(
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
-        log_results(self.__str__(processedfiles), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
+        log_results(self.__str__(processedfiles), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
 
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
@@ -154,6 +154,7 @@ if __name__ == '__main__':
                         help='number of files processed after which to create a checkpoint')
     parser.add_argument('-ta', '--test_after', default=None, type=bool,
                         help='whether or not to test after checkpointing')
+    start = time.time()
     args = parser.parse_args()
     config = load_json(args.config)
     training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
@@ -167,4 +168,5 @@ if __name__ == '__main__':
     if not args.test_after:
         print("Answering questions...")
         lm.test()
-        
+        endtime = time.time() - start
+        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")

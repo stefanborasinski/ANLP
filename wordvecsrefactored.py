@@ -11,7 +11,7 @@ import multiprocessing
 
 class LanguageModel:
 
-    def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=False):
+    def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=True):
         self.mode = mode.lower()
         self.training_algorithm = 1 if "skip" in training_algorithm.lower() else self.training_algorithm = 0 
         self.vector_from = vector_from.lower()
@@ -25,13 +25,13 @@ class LanguageModel:
         if self.vector_from != "scratch":
             if self.mode == "word2vec":
                 self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs['embfilepath'], binary=True)
-            self.dim = self.embedding['word'].size
-            self.processing_func = self._word2vec
+                self.dim = self.embedding['word'].size
+                self.processing_func = self._word2vec
             else:
                 self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs['embfilepath'])
                 self.processing_func = self._fasttext
                 if "fine" in self.vector_from:
-                    self.train_and_test()
+                    self.train()
         else:
             self.train()
             
@@ -44,7 +44,7 @@ class LanguageModel:
                self.embedding = gensim.models.Word2Vec(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
         else:
             if self.embedding is None:
-                self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),self.kwargs.get('size',300),self.kwargs.get('window',10),self.kwargs.get('min_count',3))
+                self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
             else:
                 for i, afile in enumerate(self.files):
                     if self.verbose:
@@ -77,6 +77,7 @@ class LanguageModel:
         
 
     def _subdivide_training(self):
+        
         os.chdir(self.training_dir)
         cwd = os.getcwd()
         subdirstr = f'subdir_{len(self.files)}' 
@@ -120,7 +121,7 @@ class LanguageModel:
             if self.verbose:
                 print(
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
-        log_results(self.__str__(processedfiles), acc, len(scc.questions), correct, incorrect, failwords=self.oovwords)
+        log_results(self.__str__(processedfiles), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
 
     def _word2vec(self, word, word_vec):
         if word in self.embedding:
