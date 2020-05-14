@@ -43,13 +43,23 @@ class LanguageModel:
                     
     
     def subdivide_training(self,corpus_split):
+        fullsubdirpaths = []
         divide_after = np.ceil(len(self.files)*corpus_split) if corpus_split < 1 else divide after = corpus_split
         os.chdir(self.training_dir)
         cwd = os.getcwd()
         subdirstr = 'subdir_0' 
         os.mkdir(subdirstr)
-        for i, file in enumerate(self.files):
-            os.system(f"cp -r {file} {cwd+'/'+subdirstr}"")
+        fullsubdirpath = cwd+'/'+subdirstr
+        fullsubdirpaths.append(fullsubdirpath)
+        for i, file in enumerate(self.files,1):
+            if i % divide_after == 0:
+                subdirstr = f'subdir_{i}' 
+                os.mkdir(subdirstr)
+                fullsubdirpath = cwd+'/'+subdirstr
+                fullsubdirpaths.append(fullsubdirpath)
+            os.system(f"cp -r {file} {fullsubdirpath}")
+        
+        return fullsubdirpaths
             
         
         
