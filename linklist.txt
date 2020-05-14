@@ -1,6 +1,2 @@
-2020-05-14 19:46:47.112517: word2vec_scratch_10.partaa
-https://file.io/OQA4osET
-2020-05-14 19:56:02.184146: word2vec_scratch_10.partaa
-https://file.io/O2VR5UUU
-2020-05-14 19:58:58.419643: word2vec_scratch_10.partaa
-https://file.io/ZuR7clrX
+2020-05-14 21:16:09.590418: word2vec_scratch_126.partaa
+https://file.io/96lUyca0

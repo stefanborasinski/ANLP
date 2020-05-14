@@ -3,7 +3,6 @@ import numpy as np
 from scc import *
 from utils import *
 from nltk.tokenize import word_tokenize as tokenize
-import pdb
 
 
 class LanguageModel:
@@ -13,8 +12,8 @@ class LanguageModel:
         self.scc = scc_reader
         self.files = files
         self.verbose = verbose
-        self.train()
         self.mp = methodparams
+        self.train()
 
     def __str__(self):
         return f"ngram trained on {len(self.files)} files"
@@ -27,6 +26,19 @@ class LanguageModel:
         self._make_unknowns()
         self._discount()
         self._convert_to_probs()
+        
+    def _processfiles(self):
+    for i, afile in enumerate(self.files):
+        if self.verbose:
+            print(f"{i + 1}/{len(self.files)} Processing {afile}")
+        try:
+            with open(os.path.join(self.training_dir, afile)) as instream:
+                for line in instream:
+                    line = line.rstrip()
+                    if len(line) > 0:
+                        self._processline(line)
+        except UnicodeDecodeError:
+            print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
 
     def test(self):
         acc = 0
@@ -34,8 +46,8 @@ class LanguageModel:
         for question in self.scc.questions:
             scores = []
             for key in self.scc.keys:
-                answord = question.get_field(key)
-                q = question.make_sentence(answord)
+                candidate = question.get_field(key)
+                q = question.make_sentence(candidate)
                 s, _ = self.compute_prob_line(q)
                 scores.append(s)
             maxs = max(scores)
@@ -66,19 +78,6 @@ class LanguageModel:
             current[token] = current.get(token, 0) + 1
             self.bigram[previous] = current
             previous = token
-
-    def _processfiles(self):
-        for i, afile in enumerate(self.files):
-            if self.verbose:
-                print(f"{i + 1}/{len(self.files)} Processing {afile}")
-            try:
-                with open(os.path.join(self.training_dir, afile)) as instream:
-                    for line in instream:
-                        line = line.rstrip()
-                        if len(line) > 0:
-                            self._processline(line)
-            except UnicodeDecodeError:
-                print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
 
     def _convert_to_probs(self):
 
