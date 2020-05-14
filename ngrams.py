@@ -8,7 +8,7 @@ import pdb
 
 class LanguageModel:
 
-    def __init__(self, training_dir, methodparams, files=[], verbose=False, scc_reader=None):
+    def __init__(self, training_dir, methodparams, scc_reader, files=[], verbose=False):
         self.training_dir = training_dir
         self.scc = scc_reader
         self.files = files
