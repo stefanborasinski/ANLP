@@ -48,7 +48,7 @@ class LanguageModel:
             
     def train(self):
         if len(self.files)<len(os.listdir(self.training_dir)):
-            _subdivide_training()
+            self._subdivide_training()
         if self.mode == "word2vec":
                self.embedding = gensim.models.Word2Vec(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
         else:
