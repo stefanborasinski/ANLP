@@ -66,7 +66,7 @@ class LanguageModel:
                     except UnicodeDecodeError:
                         print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
         
-        filestr = self.mode+'_'+self.vector_from+'_'+len(self.files)
+        filestr = self.mode+'_'+str(self.vector_from)+'_'+str(len(self.files))
         fname = get_tmpfile(f"{filestr}.model")
         print(f"Saving to disk under {fname}")
         self.embedding.save(fname)
