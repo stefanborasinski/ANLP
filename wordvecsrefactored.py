@@ -176,8 +176,9 @@ if __name__ == '__main__':
     config = load_json(args.config)
     if args.vector_from != "pretrained":
         training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
+        training = training[1:]
         if args.max_files is not None:
-            training = training[1:args.max_files+1]
+            training = training[:args.max_files+1]
         config['files'] = training
     scc = scc_reader()
     print(f'Getting {args.mode} {args.vector_from} model...')
