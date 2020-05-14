@@ -167,4 +167,4 @@ if __name__ == '__main__':
     if not args.test_after:
         print("Answering questions...")
         lm.test()
-        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+        

@@ -33,11 +33,11 @@ class LanguageModel:
                 if "fine" in self.vector_from:
                     self.train_and_test()
         else:
-            self.train_and_test()
+            self.train()
             
             
 
-    def train_and_test(self):
+    def train(self):
         if len(self.files)<len(os.listdir(self.training_dir)):
             _subdivide_training()
         if self.mode == "word2vec":
@@ -74,9 +74,6 @@ class LanguageModel:
                 os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ")
                 os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
         os.chdir(cwd)
-        self.test()
-        os.system(
-            f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i + 1} to results.log' && git push origin master")
         
 
     def _subdivide_training(self):
@@ -162,6 +159,7 @@ if __name__ == '__main__':
     parser.add_argument('-vf', '--vector_from', default=None, type=str,
                         help="how the word vector is obtained: either from 'scratch','pretrained' or 'finetuned'")
     args = parser.parse_args()
+    start = time.time()
     config = load_json(args.config)
     training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
     if args.max_files is not None:
@@ -169,8 +167,10 @@ if __name__ == '__main__':
     config['files'] = training
     scc = scc_reader()
     print(f'Loading model...')
-    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose)
-    if not args.test_after:
-        print("Answering questions...")
-        lm.test()
-        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose,kwargdict=config)
+    print("Answering questions...")
+    lm.test()
+    endtime = time.time() - start
+    print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+    os.system(
+        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode+'_'+lm.vector_from+'_'+len(lm.files)} to results.log' && git push origin master")
