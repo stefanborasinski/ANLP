@@ -14,3 +14,19 @@ https://file.io/sbF8W0iK
 https://file.io/gThPQ74j
 2020-05-15 00:08:39.630257: word2vec_scratch_cbow_508.partaa
 https://file.io/cQK7Wx7x
+2020-05-15 01:29:11.161775: fasttext_scratch_skipgram_126.partaa
+https://file.io/zBjbleIy
+2020-05-15 01:57:57.997493: fasttext_scratch_skipgram_251.partaa
+https://file.io/15gjPz0N
+2020-05-15 02:32:45.623171: fasttext_scratch_skipgram_376.partaa
+https://file.io/bWqIdp9l
+2020-05-15 03:18:38.974018: fasttext_scratch_skipgram_508.partaa
+https://file.io/l2CTB3Br
+2020-05-15 03:33:31.633569: fasttext_scratch_cbow_126.partaa
+https://file.io/ZD39zeu3
+2020-05-15 03:55:26.004976: fasttext_scratch_cbow_251.partaa
+https://file.io/H5ZGCZVY
+2020-05-15 04:24:57.211203: fasttext_scratch_cbow_376.partaa
+https://file.io/ntmZfpW7
+2020-05-15 05:02:39.834806: fasttext_scratch_cbow_508.partaa
+https://file.io/1AuAhqkh

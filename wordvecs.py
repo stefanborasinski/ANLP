@@ -54,18 +54,24 @@ class LanguageModel:
                self.embedding = gensim.models.Word2Vec(gensim.models.word2vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
         else:
             if self.embedding is None: #if training fasttext from scratch
-                self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
+                self.embedding = gensim.models.FastText(gensim.models.word2vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
             else: #if finetuning fasttext
                 for i, afile in enumerate(self.files):
                     if self.verbose:
                         print(f"{i + 1}/{len(self.files)} Processing {afile}")
                     filepath = os.path.join(self.training_dir, afile)
                     try:
-                        num_lines = sum(1 for line in open(filepath))
+                        txtfile = open(filepath)
+                        txtfilecontent = txtfile.read()
+                        num_words = len(txtfilecontent.split())
                         self.embedding.build_vocab(corpus_file=filepath, update=True)
-                        self.embedding.train(corpus_file=filepath, total_examples=num_lines, epochs=5)
+                        self.embedding.train(corpus_file=filepath, total_words=num_words, epochs=5)
                     except UnicodeDecodeError:
                         print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+                    
+                    if (i+1) % 125 == 0 and i<499:
+                        self.test()
+                    
         
         #save trained model and upload tarred model to file.io where it can be downloaded (only once) later for continued training/testing if necessary
         filestr = f"{self.mode}_{str(self.vector_from)}_{'skipgram' if self.training_algorithm  == 1 else 'cbow'}_{str(len(self.files))}"

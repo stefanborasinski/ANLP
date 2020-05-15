@@ -50,6 +50,6 @@ if __name__ == '__main__':
             guessed.append(qid)
         if args.verbose:
             print(f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(scc.keys[idx]), highlight=True)}")
-    log_results("roberta", acc, len(scc.questions), correct, incorrect, guessed=guessed)
+    log_results(args.mode, acc, len(scc.questions), correct, incorrect, guessed=guessed)
     endtime = time.time() - start
     print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
