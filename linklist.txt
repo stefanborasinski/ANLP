@@ -10,3 +10,5 @@ https://file.io/prc4wmNG
 https://file.io/Q1kko1OX
 2020-05-14 23:55:56.465633: word2vec_scratch_cbow_251.partaa
 https://file.io/sbF8W0iK
+2020-05-15 00:01:26.847058: word2vec_scratch_cbow_376.partaa
+https://file.io/gThPQ74j
