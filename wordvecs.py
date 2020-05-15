@@ -61,11 +61,17 @@ class LanguageModel:
                         print(f"{i + 1}/{len(self.files)} Processing {afile}")
                     filepath = os.path.join(self.training_dir, afile)
                     try:
-                        num_lines = sum(1 for line in open(filepath))
+                        txtfile = open(filepath)
+                        txtfilecontent = txtfile.read()
+                        num_words = len(txtfilecontent.split())
                         self.embedding.build_vocab(corpus_file=filepath, update=True)
-                        self.embedding.train(corpus_file=filepath, total_examples=num_lines, epochs=5)
+                        self.embedding.train(corpus_file=filepath, total_words=num_words, epochs=5)
                     except UnicodeDecodeError:
                         print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+                    
+                    if (i+1) % 125 == 0 and i<499:
+                        self.test()
+                    
         
         #save trained model and upload tarred model to file.io where it can be downloaded (only once) later for continued training/testing if necessary
         filestr = f"{self.mode}_{str(self.vector_from)}_{'skipgram' if self.training_algorithm  == 1 else 'cbow'}_{str(len(self.files))}"
