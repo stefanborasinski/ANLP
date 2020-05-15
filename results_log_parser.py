@@ -1,6 +1,6 @@
 from datetime import datetime, date, time, timedelta
 import re, copy
-
+import pdb
 
 class ResultsLogParser:
 
@@ -121,21 +121,13 @@ class ResultsLogParser:
 
     def _find_index(self,
                     search_terms):  # find index of message component, added to give more flexibility in log construction. ie correct ids may be index 3 when the log is divided into message sections
-        idx = None
         if not isinstance(search_terms, list):
             search_terms = [search_terms]
-        found = False
-        with open(self.log_path, "r") as logfile:
-            while not found:
-                line = next(logfile)
-                messages = self._split_line(line)
-                if len(messages) > 2:
-                    found = True
+        for line in self.filtlist:
+            messages = self._split_line(line)
             for i, message in enumerate(messages):
                 if any(substring in message for substring in search_terms):
-                    idx = i
-                    break
-        return idx
+                    return i
 
     def filter_by_time(self, *args, hours_ago=None, since_when=None, filtlist=None): #filter logs by either a specific numbers if hours ago or since a point in time
         if len(args) == 1:
