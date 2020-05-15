@@ -28,3 +28,5 @@ https://file.io/ZD39zeu3
 https://file.io/H5ZGCZVY
 2020-05-15 04:24:57.211203: fasttext_scratch_cbow_376.partaa
 https://file.io/ntmZfpW7
+2020-05-15 05:02:39.834806: fasttext_scratch_cbow_508.partaa
+https://file.io/1AuAhqkh
