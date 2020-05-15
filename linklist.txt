@@ -16,3 +16,5 @@ https://file.io/gThPQ74j
 https://file.io/cQK7Wx7x
 2020-05-15 01:29:11.161775: fasttext_scratch_skipgram_126.partaa
 https://file.io/zBjbleIy
+2020-05-15 01:57:57.997493: fasttext_scratch_skipgram_251.partaa
+https://file.io/15gjPz0N
