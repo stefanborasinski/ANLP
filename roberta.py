@@ -3,19 +3,24 @@ import string, time
 from scc import *
 from utils import *
 import torch
+import pdb
 
 if __name__ == '__main__':
     
     parser = get_default_argument_parser()
     args = parser.parse_args()
-    print(f'Loading roberta')
+    print(f'Loading {args.mode}')
     roberta = torch.hub.load('pytorch/fairseq', args.mode) #load either roberta.base or roberta.large
     scc = scc_reader()
 
     acc = 0
     correct, incorrect, guessed = [], [], []
-    topk = 49500
+    if args.mode == "robert.large":
+        topk = 49500
+    else:
+        topk = 3000
     start = time.time()
+    
 
     for question in scc.questions:
         q = question.get_field("question").replace("_____", "TEMPMASK")
