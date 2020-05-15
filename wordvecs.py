@@ -7,83 +7,130 @@ from utils import *
 import numpy as np
 from nltk.tokenize import word_tokenize as tokenize
 import pdb
-
-
-class TxtIter(object):
-
-    def __init__(self, filepath):
-        self.filepath = filepath
-
-    def __iter__(self):
-        with gensim.utils.open(self.filepath, 'r', encoding='utf-8') as fin:
-            for line in fin:
-                yield list(tokenize(line))
-
+import multiprocessing
 
 class LanguageModel:
 
-    def __init__(self, mode, embfilepath, training_dir=None, files=[], verbose=False, checkpoint_after=None,
-                 test_after=False, scc_reader=None):
-        self.mode = mode
-        self.oovwords = []
-        self.verbose = verbose
-        self.checkpoint_after = checkpoint_after
-        self.test_after = test_after
-        self.scc = scc_reader
-        if mode == "word2vec":
-            self.embedding = gensim.models.KeyedVectors.load_word2vec_format(embfilepath, binary=True)
-            self.dim = self.embedding['word'].size
-            self.func = self._word2vec
-        if mode == "fasttext":
-            self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(embfilepath)
-            self.func = self._fasttext
-            if training_dir is not None and len(files) > 0:
-                self.training_dir = training_dir
-                self.files = files
-                self.train()
-
-    def __str__(self, processedfiles=None):
-        if not processedfiles:
-            return f"{self.mode} trained on {len(self.files) if self.files is not None else 0} files"
+    def __init__(self, mode, training_algorithm, vector_from,scc_reader,kwargdict,verbose=True):
+        self.mode = mode.lower()
+        if self.mode == "word2vec":
+            self.processing_func = self._word2vec
         else:
-            return f"{self.mode} trained on {processedfiles} files"
-
+            self.processing_func = self._fasttext
+        if training_algorithm is not None:
+            if "skip" in training_algorithm.lower():
+                self.training_algorithm = 1 #select skip-gram
+            else:
+                self.training_algorithm = 0 #select continuous bag of words
+        else:
+            self.training_algorithm = training_algorithm
+        self.vector_from = vector_from.lower() #are we getting the vector from scratch, a pre-trained vector or are we fine-tuning a vector
+        self.scc = scc_reader
+        self.verbose = verbose
+        self.kwargs = kwargdict
+        self.training_dir = kwargdict[self.mode].get('training_dir',None)
+        self.files = kwargdict.get('files',None)
+        self.embedding = None
+        self.oovwords = []
+        
+        if self.vector_from != "scratch": #if using pre-trained vector
+            if self.mode == "word2vec":
+                self.embedding = gensim.models.KeyedVectors.load_word2vec_format(self.kwargs[self.mode]['embfilepath'], binary=True)
+            else:
+                self.embedding = gensim.models.fasttext.FastText.load_fasttext_format(self.kwargs[self.mode]['embfilepath'])
+                if "fine" in self.vector_from: #if finetuning pre-trained vector (fasttext only)
+                    self.train()
+        else:
+            self.train()
+            
+    def __str__(self):
+        return f"{self.mode} {self.vector_from} skipgram:{self.training_algorithm if self.training_algorithm is not None else None} trained files:{len(self.files) if self.files is not None else None}"
+        
+            
     def train(self):
-        for i, afile in enumerate(self.files):
+        if len(self.files)<len(os.listdir(self.training_dir)): #if max files is fewer than in training dir, make subdir with only those files for quicker training
+            self._subdivide_training()
+        if self.mode == "word2vec":
+               self.embedding = gensim.models.Word2Vec(gensim.models.word2vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
+        else:
+            if self.embedding is None: #if training fasttext from scratch
+                self.embedding = gensim.models.FastText(gensim.models.Word2Vec.PathLineSentences(self.training_dir),size=self.kwargs.get('size',300),window=self.kwargs.get('window',10),min_count=self.kwargs.get('min_count',3),workers=multiprocessing.cpu_count(),sg=self.training_algorithm)
+            else: #if finetuning fasttext
+                for i, afile in enumerate(self.files):
+                    if self.verbose:
+                        print(f"{i + 1}/{len(self.files)} Processing {afile}")
+                    filepath = os.path.join(self.training_dir, afile)
+                    try:
+                        num_lines = sum(1 for line in open(filepath))
+                        self.embedding.build_vocab(corpus_file=filepath, update=True)
+                        self.embedding.train(corpus_file=filepath, total_examples=num_lines, epochs=5)
+                    except UnicodeDecodeError:
+                        print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
+        
+        #save trained model and upload tarred model to file.io where it can be downloaded (only once) later for continued training/testing if necessary
+        filestr = f"{self.mode}_{str(self.vector_from)}_{'skipgram' if self.training_algorithm  == 1 else 'cbow'}_{str(len(self.files))}"
+        fname = get_tmpfile(f"{filestr}.model")
+        print(f"Saving to disk under {fname}")
+        self.embedding.save(fname)
+        cwd = os.getcwd()
+        print("tarring...")
+        os.chdir('/tmp')
+        os.system(f"tar -zcvf {filestr}.tar.gz *{filestr}.model* --remove-files")
+        print("splitting...")
+        os.system(
+            f"split -b 4000M {filestr}.tar.gz '{filestr}.part' && rm -rf {filestr}.tar.gz")
+        print("uploading and saving link to repository...")
+        for f in sorted(os.listdir()):
+            if f'{filestr}' in f:
+                os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ") #save link to uploaded model in repository txt file
+                os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
+        os.chdir(cwd)
+        os.system("rm -rf *subdir*")
+        
 
-            if self.verbose:
-                print(f"{i + 1}/{len(self.files)} Processing {afile}")
-            filepath = os.path.join(self.training_dir, afile)
-            try:
-                num_lines = sum(1 for line in open(filepath))
-                txtfile = TxtIter(filepath)
-                self.embedding.build_vocab(sentences=txtfile, update=True)
-                self.embedding.train(sentences=txtfile, total_examples=num_lines, epochs=self.embedding.epochs)
-            except UnicodeDecodeError:
-                print("UnicodeDecodeError processing {}: ignoring rest of file".format(afile))
-            if self.checkpoint_after and ((i + 1) % self.checkpoint_after == 0 or i + 1 == len(self.files)):
-                fname = get_tmpfile(f"fasttext_{i + 1}.model")
-                print(f"Saving to disk under {fname} after training on {i + 1} files")
-                self.embedding.save(fname)
-                cwd = os.getcwd()
-                print("tarring...")
-                os.chdir('/tmp')
-                os.system(f"tar -zcvf fasttext_{i + 1}.tar.gz *fasttext_{i + 1}.model* --remove-files")
-                print("splitting...")
-                os.system(
-                    f"split -b 4000M fasttext_{i + 1}.tar.gz 'fasttext_{i + 1}.part' && rm -rf fasttext_{i + 1}.tar.gz")
-                print("uploading and saving link to gdrive...")
-                for f in sorted(os.listdir()):
-                    if f'fasttext_{i + 1}' in f:
-                        os.system(f"echo '{str(datetime.datetime.now()) + ': ' + f}' >> '/content/ANLP/linklist.txt' ")
-                        os.system(f"file.io {f} >> '/content/ANLP/linklist.txt' && rm -rf {f}")
-                os.chdir(cwd)
-                if self.test_after:
-                    self.test(i + 1)
-                    os.system(
-                        f"cd /content/ANLP && git add -A && git commit -m 'added fasstext_{i + 1} to results.log' && git push origin master")
+    def _subdivide_training(self): #make subdirectory of limited training files for pathlinesentence to use
+        
+        os.chdir(self.training_dir)
+        cwd = os.getcwd()
+        subdirstr = f'subdir_{len(self.files)}'
+        fullsubdirpath = cwd+'/'+subdirstr
+        if not os.path.exists(fullsubdirpath):
+            os.mkdir(subdirstr)
+            for file in self.files:
+                os.system(f"cp -r {file} {fullsubdirpath}")
 
-    def test(self, processedfiles=None):
+        self.training_dir = fullsubdirpath
+        
+    def get_wordvec(self, words):
+        word_vec = []
+        for word in words:
+            word_vec = self.processing_func(word, word_vec)
+        return word_vec
+
+    def _word2vec(self, word, word_vec):
+        if word in self.embedding:
+            word_vec.append(self.embedding[word])
+        else:
+            word_vec.append(
+                np.random.uniform(-0.25, 0.25, self.embedding['word'].size))  # if word not in embedding then randomly output its vector
+            if word not in self.oovwords:
+                self.oovwords.append(word)
+        return word_vec
+
+    def _fasttext(self, word, word_vec):
+        word_vec.append(self.embedding[word])
+        if word not in self.embedding.wv.vocab and word not in self.oovwords:
+            self.oovwords.append(word)
+        return word_vec
+
+    def total_similarity(self, vec, q_vec):
+        score = 0
+        for v in q_vec:
+            score += (1 - spatial.distance.cosine(vec, v))
+        # sum score of distance between vector for every word in question and vector for answer
+        return score
+    
+    def test(self):
         acc = 0
         correct, incorrect = [], []
         for question in self.scc.questions:
@@ -116,57 +163,29 @@ class LanguageModel:
             if self.verbose:
                 print(
                     f"{qid}: {answer} {outcome} | {question.make_sentence(question.get_field(self.scc.keys[idx]), highlight=True)}")
-        log_results(self.__str__(processedfiles), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
-
-    def _word2vec(self, word, word_vec):
-        if word in self.embedding:
-            word_vec.append(self.embedding[word])
-        else:
-            word_vec.append(
-                np.random.uniform(-0.25, 0.25, self.dim))  # if word not in embedding then randomly output its vector
-            if word not in self.oovwords:
-                self.oovwords.append(word)
-        return word_vec
-
-    def _fasttext(self, word, word_vec):
-        word_vec.append(self.embedding[word])
-        if word not in self.embedding.wv.vocab and word not in self.oovwords:
-            self.oovwords.append(word)
-        return word_vec
-
-    def get_wordvec(self, words):
-        word_vec = []
-        for word in words:
-            word_vec = self.func(word, word_vec)
-        return word_vec
-
-    def total_similarity(self, vec, q_vec):
-        score = 0
-        for v in q_vec:
-            score += (1 - spatial.distance.cosine(vec, v))
-        # sum score of distance between vector for every word in question and vector for answer
-        return score
-
+        log_results(self.__str__(), acc, len(self.scc.questions), correct, incorrect, failwords=self.oovwords)
 
 if __name__ == '__main__':
     parser = get_default_argument_parser()
-    parser.add_argument('-ca', '--checkpoint_after', default=None, type=int,
-                        help='number of files processed after which to create a checkpoint')
-    parser.add_argument('-ta', '--test_after', default=None, type=bool,
-                        help='whether or not to test after checkpointing')
-    start = time.time()
+    parser.add_argument('-ta', '--training_algorithm', default=None, type=str,
+                        help="learn word vectors via 'skip-gram' or 'cbow' architecture")
+    parser.add_argument('-vf', '--vector_from', default=None, type=str,
+                        help="how the word vector is obtained: either from 'scratch','pretrained' or 'finetuned'")
     args = parser.parse_args()
+    start = time.time()
     config = load_json(args.config)
-    training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
-    if args.max_files is not None:
-        training = training[:args.max_files]
-    args.files = training
+    if args.vector_from != "pretrained":
+        training, _ = get_training_testing(config[args.mode]['training_dir'], split=1)
+        training = training[1:] #quick workaround to avoid persistent .ipynb_checkpoint file that has cropped up in training directory
+        if args.max_files is not None:
+            training = training[:args.max_files+1]
+        config['files'] = training
     scc = scc_reader()
-    print(f'Loading pretrained embeddings: {config[args.mode]["embfilepath"]}')
-    lm = LanguageModel(args.mode, files=args.files, verbose=args.verbose, checkpoint_after=args.checkpoint_after,
-                       test_after=args.test_after, scc_reader=scc, **config[args.mode])
-    if not args.test_after:
-        print("Answering questions...")
-        lm.test()
-        endtime = time.time() - start
-        print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+    print(f'Getting {args.mode} {args.vector_from} model...')
+    lm = LanguageModel(mode=args.mode, training_algorithm=args.training_algorithm, vector_from=args.vector_from, verbose=args.verbose, scc_reader=scc, kwargdict=config)
+    print("Answering questions...")
+    lm.test()
+    endtime = time.time() - start
+    print(f"Total run time: {endtime:.1f}s, {endtime / 60:.1f}m")
+    os.system(
+        f"cd /content/ANLP && git add -A && git commit -m 'added {lm.mode}_{lm.vector_from}_{args.training_algorithm if args.training_algorithm  is not None else 'notraining'}_{len(lm.files) if lm.files  is not None else 'nofiles'} to results.log' && git push origin master")

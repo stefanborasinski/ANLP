@@ -1,6 +1,14 @@
-2020-05-14 19:46:47.112517: word2vec_scratch_10.partaa
-https://file.io/OQA4osET
-2020-05-14 19:56:02.184146: word2vec_scratch_10.partaa
-https://file.io/O2VR5UUU
-2020-05-14 19:58:58.419643: word2vec_scratch_10.partaa
-https://file.io/ZuR7clrX
+2020-05-14 21:16:09.590418: word2vec_scratch_skip_126.partaa
+https://file.io/96lUyca0
+2020-05-14 21:27:11.445211: word2vec_scratch_skip_251.partaa
+https://file.io/hF0OPMqp
+2020-05-14 21:45:53.574053: word2vec_scratch_skip_376.partaa
+https://file.io/soLd7s8x
+2020-05-14 23:18:07.135328: word2vec_scratch_skip_508.partaa
+https://file.io/prc4wmNG
+2020-05-14 23:50:58.015274: word2vec_scratch_cbow_126.partaa
+https://file.io/Q1kko1OX
+2020-05-14 23:55:56.465633: word2vec_scratch_cbow_251.partaa
+https://file.io/sbF8W0iK
+2020-05-15 00:01:26.847058: word2vec_scratch_cbow_376.partaa
+https://file.io/gThPQ74j
