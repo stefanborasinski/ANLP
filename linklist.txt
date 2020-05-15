@@ -30,3 +30,5 @@ https://file.io/H5ZGCZVY
 https://file.io/ntmZfpW7
 2020-05-15 05:02:39.834806: fasttext_scratch_cbow_508.partaa
 https://file.io/1AuAhqkh
+2020-05-15 07:04:53.023002: fasttext_finetune_508.partaa
+https://file.io/kdZ190Wq
